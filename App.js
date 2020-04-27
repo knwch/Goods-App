@@ -4,9 +4,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider} from '@ui-kitten/components';
-import GoodStack from './routes/GoodStack';
-import HomeStack from './routes/HomeStack';
-import AccountStack from './routes/AccountStack';
+import GoodStack from './src/routes/GoodStack';
+import HomeStack from './src/routes/HomeStack';
+import AccountStack from './src/routes/AccountStack';
 
 Ionicons.loadFont();
 
