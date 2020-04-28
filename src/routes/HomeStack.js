@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Image, StyleSheet} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import Home from '../screens/Home';
 import Map from '../screens/Map';
 
@@ -12,30 +12,30 @@ export default function HomeStackScreen() {
       initialRouteName="Home"
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#005eb8',
+          backgroundColor: '#213263',
+          height: 90,
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
-      }}>
-      <HomeStack.Screen
-        name="Home"
-        component={Home}
-        options={{
-          title: 'Goods',
-          headerTitle: (
+        headerTitleAlign: 'center',
+        headerTitle: (
+          <View>
             <Image
               style={styles.image}
-              source={require('../components/images/goods.png')}
+              source={require('../assets/goods-white.png')}
             />
-          ),
-        }}
-      />
+          </View>
+        ),
+      }}>
+      <HomeStack.Screen name="Home" component={Home} />
       <HomeStack.Screen
         name="Map"
         component={Map}
-        options={{title: 'Discover'}}
+        options={{
+          headerBackTitle: ' ',
+        }}
       />
     </HomeStack.Navigator>
   );
@@ -44,8 +44,8 @@ export default function HomeStackScreen() {
 const styles = StyleSheet.create({
   image: {
     flex: 1,
-    width: null,
-    height: null,
+    width: 95,
+    height: 95,
     resizeMode: 'contain',
   },
 });
