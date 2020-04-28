@@ -8,7 +8,18 @@ const GoodStack = createStackNavigator();
 
 export default function GoodStackScreen() {
   return (
-    <GoodStack.Navigator initialRouteName="Lists">
+    <GoodStack.Navigator
+      initialRouteName="Lists"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#213263',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        headerTitleAlign: 'center',
+      }}>
       <GoodStack.Screen
         name="Lists"
         component={Lists}
@@ -22,7 +33,7 @@ export default function GoodStackScreen() {
       <GoodStack.Screen
         name="MapPicker"
         component={MapPicker}
-        options={{title: 'Pin Location'}}
+        options={{title: 'New Goods', headerBackTitle: ' '}}
       />
     </GoodStack.Navigator>
   );
