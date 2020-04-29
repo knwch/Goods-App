@@ -12,7 +12,7 @@ export default function GoodStackScreen() {
       initialRouteName="Lists"
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#213263',
+          backgroundColor: '#2c3d70',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
