@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {StyleSheet, ScrollView, Text, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Layout, Input, Button, Select, SelectItem} from '@ui-kitten/components';
 import KeyboardShift from '../../../components/KeyboardShift.js';
@@ -15,37 +15,75 @@ export default class Forms extends Component {
       typedata: ['Developer', 'Designer', 'Product Manager'],
       title: '',
       type: '',
+      goods: '',
+      price: '',
+      describe: '',
+      telephone: '',
+      contact: '',
+      location: {
+        lng: undefined,
+        lat: undefined,
+      },
+      address: '',
     };
+  }
+
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
+    if (nextProps.route.params.data[1] !== this.state.address) {
+      this.setState({address: nextProps.route.params.data[1]});
+    }
+
+    if (
+      nextProps.route.params.data[0].lng !== this.state.location.lng &&
+      nextProps.route.params.data[0].lat !== this.state.location.lat
+    ) {
+      this.setState({location: nextProps.route.params.data[0]});
+    }
   }
 
   onChange = event => {
     this.setState({value: event});
   };
 
-  FormScreen = () => {
+  labelInput = text => {
+    return <Text style={styles.textColor}>{text}</Text>;
+  };
+
+  render() {
     const {navigate} = this.props.navigation;
     return (
       <KeyboardShift>
         {() => (
-          <Layout style={styles.container} level="2">
+          <Layout style={styles.container} level="3">
             <ScrollView>
-              <Layout style={styles.layout} level="2">
+              <Layout style={styles.layout} level="3">
                 <Input
                   style={styles.inputform}
                   // value={value}
                   name="title"
-                  label="หัวข้อ *"
+                  label={this.labelInput('หัวข้อ *')}
                   placeholder="ระบุตามที่ต้องการ"
                   // accessoryRight={renderIcon}
                   // captionIcon={AlertIcon}
                   // secureTextEntry={secureTextEntry}
                   onChangeText={this.onChange}
                 />
-                <Layout style={styles.row} level="2">
+                <Select
+                  style={styles.inputform}
+                  name="goods"
+                  label={this.labelInput('ประเภท *')}
+                  placeholder="เลือก"
+                  accessoryRight={ChevronIcon}
+                  onSelect={index => this.setState({index})}>
+                  <SelectItem title="Option 1" />
+                  <SelectItem title="Option 2" />
+                  <SelectItem title="Option 3" />
+                </Select>
+                <Layout style={styles.row} level="3">
                   <Select
                     style={styles.select}
                     name="goods"
-                    label="สินค้า *"
+                    label={this.labelInput('สินค้า *')}
                     placeholder="เลือก"
                     accessoryRight={ChevronIcon}
                     onSelect={index => this.setState({index})}>
@@ -57,7 +95,7 @@ export default class Forms extends Component {
                     style={styles.select}
                     // value={value}
                     name="price"
-                    label="ราคา *"
+                    label={this.labelInput('ราคา *')}
                     caption="ใส่เลข 0 เมื่อต้องการบริจาคสินค้า"
                     placeholder="เช่น 42 - 80"
                     onChangeText={this.onChange}
@@ -67,7 +105,7 @@ export default class Forms extends Component {
                   style={styles.inputform}
                   // value={value}
                   name="detail"
-                  label="รายละเอียดสินค้าเพิ่มเติม"
+                  label={this.labelInput('รายละเอียดสินค้าเพิ่มเติม')}
                   placeholder=""
                   onChangeText={this.onChange}
                 />
@@ -75,7 +113,7 @@ export default class Forms extends Component {
                   style={styles.inputform}
                   // value={value}
                   name="telephone"
-                  label="เบอร์ติดต่อ"
+                  label={this.labelInput('เบอร์ติดต่อ')}
                   placeholder="เช่น 0824686293"
                   onChangeText={this.onChange}
                 />
@@ -83,24 +121,28 @@ export default class Forms extends Component {
                   style={styles.inputform}
                   // value={value}
                   name="contact"
-                  label="ช่องทางการติดต่อเพิ่มเติม"
+                  label={this.labelInput('ช่องทางการติดต่อเพิ่มเติม')}
                   placeholder="เช่น Line, Facebook"
                   onChangeText={this.onChange}
                 />
                 <Input
                   style={styles.inputform}
-                  // value={value}
+                  value={this.state.address}
                   name="address"
-                  label="ปักหมุดสถานที่ *"
+                  label={this.labelInput('ปักหมุดสถานที่ *')}
                   placeholder="กดสัญลักษณ์ด้านขวาเพื่อปักหมุด"
                   accessoryRight={() => (
                     <TouchableOpacity
                       hitSlop={{top: 30, left: 30, bottom: 30, right: 30}}
-                      onPress={() => navigate('MapPicker')}>
+                      onPress={() =>
+                        navigate('MapPicker', {
+                          data: [this.state.location, this.state.address],
+                        })
+                      }>
                       <Ionicons
                         name={'crosshairs-gps'}
                         size={16}
-                        color="#8f9bb3"
+                        color="#213263"
                       />
                     </TouchableOpacity>
                   )}
@@ -115,11 +157,6 @@ export default class Forms extends Component {
         )}
       </KeyboardShift>
     );
-  };
-
-  render() {
-    const FormScreen = this.FormScreen;
-    return <FormScreen />;
   }
 }
 
@@ -146,5 +183,10 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 14,
+    backgroundColor: '#213263',
+    borderColor: '#213263',
+  },
+  textColor: {
+    color: '#213263',
   },
 });
