@@ -18,7 +18,7 @@ export default class AccountStackScreen extends Component {
   render() {
     return (
       <AccountStack.Navigator
-        initialRouteName="Lists"
+        initialRouteName="Account"
         screenOptions={{
           headerStyle: {
             backgroundColor: '#2c3d70',
