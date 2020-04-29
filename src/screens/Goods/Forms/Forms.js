@@ -96,7 +96,6 @@ export default class Forms extends Component {
                     // value={value}
                     name="price"
                     label={this.labelInput('ราคา *')}
-                    caption="ใส่เลข 0 เมื่อต้องการบริจาคสินค้า"
                     placeholder="เช่น 42 - 80"
                     onChangeText={this.onChange}
                   />
