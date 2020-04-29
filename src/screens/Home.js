@@ -7,8 +7,9 @@ export default class Home extends Component {
     super(props);
   }
 
-  HomeScreen = () => {
+  render() {
     const {navigate} = this.props.navigation;
+
     return (
       <Layout style={styles.container}>
         <Layout style={styles.coverContainer}>
@@ -34,12 +35,6 @@ export default class Home extends Component {
         </Layout>
       </Layout>
     );
-  };
-
-  render() {
-    const HomeScreen = this.HomeScreen;
-
-    return <HomeScreen />;
   }
 }
 
