@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {Layout, Button, Text, Card} from '@ui-kitten/components';
+import {Text} from '@ui-kitten/components';
 import BottomSheet from 'reanimated-bottom-sheet';
 
 MapboxGL.setAccessToken(
@@ -85,8 +85,6 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
-    // overflow: 'hidden',
-    backgroundColor: 'tomato',
   },
   map: {
     flex: 1,
