@@ -13,7 +13,7 @@ export default class GoodStackScreen extends Component {
     super(props);
     this.state = {
       typedata: ['Developer', 'Designer', 'Product Manager'],
-      userToken: null,
+      userToken: 'null',
     };
   }
 

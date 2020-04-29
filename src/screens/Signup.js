@@ -34,63 +34,61 @@ export default class Signup extends Component {
     const {email, password, passwordConfirm, fname, lname} = this.state;
 
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView>
-          <Layout style={styles.container} level="3">
-            <KeyboardAvoidingView
-              style={styles.container}
-              behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-              keyboardVerticalOffset={100}
-              enabled>
-              <Layout style={styles.layout} level="3">
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={100}
+        enabled>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView>
+            <Layout style={styles.layout} level="3">
+              <Input
+                style={styles.inputForm}
+                value={email}
+                name="email"
+                autoCapitalize="characters"
+                label={this.labelInput('อีเมล')}
+                onChangeText={this.onChangeText('email')}
+              />
+              <Input
+                style={styles.inputForm}
+                value={password}
+                name="password"
+                secureTextEntry={true}
+                label={this.labelInput('รหัสผ่าน')}
+                onChangeText={this.onChangeText('password')}
+              />
+              <Input
+                style={styles.inputForm}
+                value={passwordConfirm}
+                name="passwordConfirm"
+                secureTextEntry={true}
+                label={this.labelInput('ยืนยันรหัสผ่าน')}
+                onChangeText={this.onChangeText('passwordConfirm')}
+              />
+              <Layout style={styles.row} level="3">
                 <Input
-                  style={styles.inputForm}
-                  value={email}
-                  name="email"
-                  autoCapitalize="characters"
-                  label={this.labelInput('อีเมล')}
-                  onChangeText={this.onChangeText('email')}
+                  style={styles.halfInput}
+                  value={fname}
+                  name="fname"
+                  label={this.labelInput('ชื่อจริง')}
+                  onChangeText={this.onChangeText('fname')}
                 />
                 <Input
-                  style={styles.inputForm}
-                  value={password}
-                  name="password"
-                  secureTextEntry={true}
-                  label={this.labelInput('รหัสผ่าน')}
-                  onChangeText={this.onChangeText('password')}
+                  style={styles.halfInput}
+                  value={lname}
+                  name="lname"
+                  label={this.labelInput('นามสกุล')}
+                  onChangeText={this.onChangeText('lname')}
                 />
-                <Input
-                  style={styles.inputForm}
-                  value={passwordConfirm}
-                  name="passwordConfirm"
-                  secureTextEntry={true}
-                  label={this.labelInput('ยืนยันรหัสผ่าน')}
-                  onChangeText={this.onChangeText('passwordConfirm')}
-                />
-                <Layout style={styles.row} level="3">
-                  <Input
-                    style={styles.halfInput}
-                    value={fname}
-                    name="fname"
-                    label={this.labelInput('ชื่อจริง')}
-                    onChangeText={this.onChangeText('fname')}
-                  />
-                  <Input
-                    style={styles.halfInput}
-                    value={lname}
-                    name="lname"
-                    label={this.labelInput('นามสกุล')}
-                    onChangeText={this.onChangeText('lname')}
-                  />
-                </Layout>
               </Layout>
               <Button style={styles.button} size="medium" status="primary">
                 ลงทะเบียน
               </Button>
-            </KeyboardAvoidingView>
-          </Layout>
-        </ScrollView>
-      </TouchableWithoutFeedback>
+            </Layout>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -99,25 +97,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: '#fafafa',
   },
   row: {
     marginTop: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: '#fafafa',
   },
   halfInput: {
     flex: 1,
     margin: 2,
   },
   layout: {
-    marginLeft: 14,
-    marginRight: 14,
+    paddingLeft: 14,
+    paddingRight: 14,
+    backgroundColor: '#fafafa',
   },
   inputForm: {
     marginTop: 12,
   },
   button: {
     margin: 14,
+    alignSelf: 'flex-end',
     backgroundColor: '#2c3d70',
     borderColor: '#2c3d70',
   },
