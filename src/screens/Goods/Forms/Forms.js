@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Layout, Input, Button, Select, SelectItem} from '@ui-kitten/components';
-import KeyboardShift from '../../../components/KeyboardShift.js';
 
 const ChevronIcon = () => (
   <Ionicons name={'chevron-down'} size={20} color="#2c3d70" />
@@ -65,6 +64,7 @@ export default class Forms extends Component {
     return (
       <KeyboardAvoidingView
         style={styles.container}
+        // eslint-disable-next-line eqeqeq
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={100}
         enabled>
