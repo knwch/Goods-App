@@ -183,10 +183,10 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 14,
-    backgroundColor: '#213263',
-    borderColor: '#213263',
+    backgroundColor: '#2c3d70',
+    borderColor: '#2c3d70',
   },
   textColor: {
-    color: '#213263',
+    color: '#2c3d70',
   },
 });
