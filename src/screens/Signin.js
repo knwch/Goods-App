@@ -51,44 +51,43 @@ export default class Signin extends Component {
     const {navigate} = this.props.navigation;
     const {email, password, secureTextEntry} = this.state;
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Layout style={styles.container} level="3">
-          <KeyboardAvoidingView
-            style={styles.container}
-            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={100}
-            enabled>
-            <Layout style={styles.layout} level="3">
-              <Input
-                style={styles.inputForm}
-                value={email}
-                name="email"
-                label={this.labelInput('อีเมล')}
-                onChangeText={this.onChangeText('email')}
-              />
-              <Input
-                style={styles.inputForm}
-                value={password}
-                name="password"
-                accessoryRight={this.renderIcon}
-                secureTextEntry={secureTextEntry}
-                label={this.labelInput('รหัสผ่าน')}
-                onChangeText={this.onChangeText('password')}
-              />
-              <TouchableOpacity
-                hitSlop={{top: 15, left: 30, bottom: 30, right: 30}}
-                onPress={() => navigate('Signup')}>
-                <Text style={styles.registerLabel} category="label">
-                  ลงทะเบียนที่นี่
-                </Text>
-              </TouchableOpacity>
-            </Layout>
+      <KeyboardAvoidingView
+        style={styles.container}
+        // eslint-disable-next-line eqeqeq
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={100}
+        enabled>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Layout style={styles.layout} level="3">
+            <Input
+              style={styles.inputForm}
+              value={email}
+              name="email"
+              label={this.labelInput('อีเมล')}
+              onChangeText={this.onChangeText('email')}
+            />
+            <Input
+              style={styles.inputForm}
+              value={password}
+              name="password"
+              accessoryRight={this.renderIcon}
+              secureTextEntry={secureTextEntry}
+              label={this.labelInput('รหัสผ่าน')}
+              onChangeText={this.onChangeText('password')}
+            />
+            <TouchableOpacity
+              hitSlop={{top: 15, left: 30, bottom: 30, right: 30}}
+              onPress={() => navigate('Signup')}>
+              <Text style={styles.registerLabel} category="label">
+                ลงทะเบียนที่นี่
+              </Text>
+            </TouchableOpacity>
             <Button style={styles.button} size="medium" status="primary">
               เข้าสู่ระบบ
             </Button>
-          </KeyboardAvoidingView>
-        </Layout>
-      </TouchableWithoutFeedback>
+          </Layout>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -99,17 +98,21 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fafafa',
   },
   layout: {
     marginLeft: 14,
     marginRight: 14,
+    backgroundColor: '#fafafa',
   },
   inputForm: {
     marginTop: 12,
     width: 300,
   },
   button: {
+    marginTop: 24,
     margin: 14,
+    alignSelf: 'center',
     backgroundColor: '#2c3d70',
     borderColor: '#2c3d70',
   },
