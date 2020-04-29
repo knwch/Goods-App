@@ -3,13 +3,11 @@ import {
   StyleSheet,
   ScrollView,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Layout, Input, Button} from '@ui-kitten/components';
 
 export default class Signup extends Component {
