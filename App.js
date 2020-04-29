@@ -2,8 +2,6 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
-import * as eva from '@eva-design/eva';
-import {ApplicationProvider} from '@ui-kitten/components';
 import GoodStack from './src/routes/GoodStack';
 import HomeStack from './src/routes/HomeStack';
 import AccountStack from './src/routes/AccountStack';
