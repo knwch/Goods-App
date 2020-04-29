@@ -53,6 +53,7 @@ export default class Signin extends Component {
     return (
       <KeyboardAvoidingView
         style={styles.container}
+        // eslint-disable-next-line eqeqeq
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={100}
         enabled>
