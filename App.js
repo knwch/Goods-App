@@ -7,14 +7,15 @@ import {ApplicationProvider} from '@ui-kitten/components';
 import GoodStack from './src/routes/GoodStack';
 import HomeStack from './src/routes/HomeStack';
 import AccountStack from './src/routes/AccountStack';
-
+import {connect, Provider} from 'react-redux/';
+import store from './src/redux/store';
 Ionicons.loadFont();
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <ApplicationProvider {...eva} theme={eva.light}>
+    <Provider store={store}>
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={({route}) => ({
@@ -55,6 +56,6 @@ export default function App() {
           <Tab.Screen name="Account" component={AccountStack} />
         </Tab.Navigator>
       </NavigationContainer>
-    </ApplicationProvider>
+    </Provider>
   );
 }
