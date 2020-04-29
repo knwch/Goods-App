@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
-import {StyleSheet, ScrollView, Text, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Layout, Input, Button, Select, SelectItem} from '@ui-kitten/components';
 import KeyboardShift from '../../../components/KeyboardShift.js';
 
 const ChevronIcon = () => (
-  <Ionicons name={'chevron-down'} size={20} color="#8f9bb3" />
+  <Ionicons name={'chevron-down'} size={20} color="#2c3d70" />
 );
 
 export default class Forms extends Component {
@@ -29,15 +38,17 @@ export default class Forms extends Component {
   }
 
   UNSAFE_componentWillUpdate(nextProps, nextState) {
-    if (nextProps.route.params.data[1] !== this.state.address) {
-      this.setState({address: nextProps.route.params.data[1]});
-    }
+    if (nextProps.route.params != null) {
+      if (nextProps.route.params.data[1] !== this.state.address) {
+        this.setState({address: nextProps.route.params.data[1]});
+      }
 
-    if (
-      nextProps.route.params.data[0].lng !== this.state.location.lng &&
-      nextProps.route.params.data[0].lat !== this.state.location.lat
-    ) {
-      this.setState({location: nextProps.route.params.data[0]});
+      if (
+        nextProps.route.params.data[0].lng !== this.state.location.lng &&
+        nextProps.route.params.data[0].lat !== this.state.location.lat
+      ) {
+        this.setState({location: nextProps.route.params.data[0]});
+      }
     }
   }
 
@@ -52,14 +63,18 @@ export default class Forms extends Component {
   render() {
     const {navigate} = this.props.navigation;
     return (
-      <KeyboardShift>
-        {() => (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView>
           <Layout style={styles.container} level="3">
-            <ScrollView>
+            <KeyboardAvoidingView
+              style={{flex: 1}}
+              behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+              keyboardVerticalOffset={100}
+              enabled>
               <Layout style={styles.layout} level="3">
                 <Input
                   style={styles.inputform}
-                  // value={value}
+                  value={this.state.title}
                   name="title"
                   label={this.labelInput('หัวข้อ *')}
                   placeholder="ระบุตามที่ต้องการ"
@@ -151,10 +166,10 @@ export default class Forms extends Component {
               <Button style={styles.button} size="medium" status="primary">
                 เพิ่มสินค้า
               </Button>
-            </ScrollView>
+            </KeyboardAvoidingView>
           </Layout>
-        )}
-      </KeyboardShift>
+        </ScrollView>
+      </TouchableWithoutFeedback>
     );
   }
 }
