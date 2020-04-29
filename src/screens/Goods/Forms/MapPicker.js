@@ -20,9 +20,9 @@ export default class MapPicker extends Component {
         lat: undefined,
       },
       address: '',
-      isLoading: false,
       isDoneFetching: true,
       isDisableButton: true,
+      isUserLocationMarked: false,
     };
 
     this.setLocation = this.setLocation.bind(this);
@@ -36,6 +36,8 @@ export default class MapPicker extends Component {
         address: params.data[1],
         center: [params.data[0].lng, params.data[0].lat],
         isDisableButton: false,
+        isUserLocationMarked: true,
+        followUserLocation: false,
       });
     }
   }
@@ -60,19 +62,31 @@ export default class MapPicker extends Component {
       });
   };
 
-  setLocation = e => {
-    const {geometry} = e;
+  setLocation = (lng, lat) => {
     const {isDoneFetching} = this.state;
     if (isDoneFetching === true) {
       this.setState({
         location: {
-          lng: geometry.coordinates[0],
-          lat: geometry.coordinates[1],
+          lng: lng,
+          lat: lat,
         },
         isDoneFetching: false,
         isDisableButton: true,
       });
-      this.fetchAddress(geometry.coordinates[0], geometry.coordinates[1]);
+      this.fetchAddress(lng, lat);
+    }
+  };
+
+  onPressLocation = e => {
+    const {geometry} = e;
+    this.setLocation(geometry.coordinates[0], geometry.coordinates[1]);
+  };
+
+  onUserLocation = e => {
+    const {isUserLocationMarked} = this.state;
+    if (isUserLocationMarked === false && e != null) {
+      this.setState({isUserLocationMarked: true});
+      this.setLocation(e.coords.longitude, e.coords.latitude);
     }
   };
 
@@ -83,13 +97,15 @@ export default class MapPicker extends Component {
     return (
       <View style={styles.page}>
         <View style={styles.container}>
-          {console.log(center)}
           <MapboxGL.MapView
             ref={ref => (this.map = ref)}
             style={styles.map}
             logoEnabled={false}
-            onPress={this.setLocation}>
-            <MapboxGL.UserLocation />
+            onPress={this.onPressLocation}>
+            <MapboxGL.UserLocation
+              visible={false}
+              onUpdate={this.onUserLocation}
+            />
             <MapboxGL.Camera
               defaultSettings={{
                 centerCoordinate: center,
