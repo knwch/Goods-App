@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import Home from '../screens/Home';
 import Map from '../screens/Map';
 
@@ -21,14 +21,12 @@ export default class HomeStackScreen extends React.Component {
             fontWeight: 'bold',
           },
           headerTitleAlign: 'center',
-          // headerTitle: (
-          //   //<View>
-          //   <Image
-          //     style={styles.image}
-          //     source={require('../assets/goods-white.png')}
-          //   />
-          //   //</View>
-          // ),
+          headerTitle: props => (
+            <Image
+              style={styles.image}
+              source={require('../assets/goods-white.png')}
+            />
+          ),
         }}>
         <HomeStack.Screen name="Home" component={Home} />
         <HomeStack.Screen
@@ -48,6 +46,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: 95,
     height: 95,
+
     resizeMode: 'contain',
   },
 });
