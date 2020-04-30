@@ -1,11 +1,33 @@
 import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, PermissionsAndroid, Image} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {Button} from '@ui-kitten/components';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1Ijoia253Y2giLCJhIjoiY2s5Zno2cGg2MGdqazNubzkzaHIzZmppMyJ9.mSjQ3XOe2IKTm1Ub-TwJZw',
 );
+
+const requestCameraPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Goods App Location Permission',
+        message: 'Goods App needs access to your location ',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('You can use the location');
+    } else {
+      console.log('Location permission denied');
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
 
 export default class MapPicker extends Component {
   constructor(props) {
@@ -16,8 +38,8 @@ export default class MapPicker extends Component {
       followZoomLevel: 13,
       center: [100.5018, 13.7563],
       location: {
-        lng: undefined,
-        lat: undefined,
+        lng: 100.5018,
+        lat: 13.7563,
       },
       address: '',
       isDoneFetching: true,
@@ -44,6 +66,7 @@ export default class MapPicker extends Component {
 
   componentDidMount() {
     MapboxGL.setTelemetryEnabled(false);
+    requestCameraPermission;
   }
 
   fetchAddress = (lng, lat) => {
@@ -100,7 +123,6 @@ export default class MapPicker extends Component {
           <MapboxGL.MapView
             ref={ref => (this.map = ref)}
             style={styles.map}
-            logoEnabled={false}
             onPress={this.onPressLocation}>
             <MapboxGL.UserLocation
               visible={false}
@@ -114,25 +136,29 @@ export default class MapPicker extends Component {
               followUserLocation={followUserLocation}
               followZoomLevel={followZoomLevel}
             />
-            <MapboxGL.PointAnnotation
-              id="marked"
+            <MapboxGL.MarkerView
               coordinate={[location.lng, location.lat]}
-            />
-            <View style={styles.bottom}>
-              <Button
-                style={styles.button}
-                size="medium"
-                status="primary"
-                disabled={this.state.isDisableButton}
-                onPress={() =>
-                  navigate('Forms', {
-                    data: [this.state.location, this.state.address],
-                  })
-                }>
-                ยืนยัน
-              </Button>
-            </View>
+              anchor={{x: 0.5, y: 1}}>
+              <Image
+                style={styles.marker}
+                source={require('../../../assets/marker.png')}
+              />
+            </MapboxGL.MarkerView>
           </MapboxGL.MapView>
+          <View style={styles.bottom}>
+            <Button
+              style={styles.button}
+              size="medium"
+              status="primary"
+              disabled={this.state.isDisableButton}
+              onPress={() =>
+                navigate('Forms', {
+                  data: [this.state.location, this.state.address],
+                })
+              }>
+              ยืนยัน
+            </Button>
+          </View>
         </View>
       </View>
     );
@@ -161,7 +187,13 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   bottom: {
-    flex: 1,
-    justifyContent: 'flex-end',
+    position: 'absolute',
+    width: '100%',
+    top: '90%',
+    zIndex: 10,
+  },
+  marker: {
+    width: 40,
+    height: 40,
   },
 });

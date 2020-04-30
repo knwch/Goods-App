@@ -47,6 +47,8 @@ export default class Signin extends Component {
     );
   };
 
+  onSubmit = () => {};
+
   render() {
     const {navigate} = this.props.navigation;
     const {email, password, secureTextEntry} = this.state;
@@ -63,6 +65,7 @@ export default class Signin extends Component {
               style={styles.inputForm}
               value={email}
               name="email"
+              autoCapitalize="none"
               label={this.labelInput('อีเมล')}
               onChangeText={this.onChangeText('email')}
             />
@@ -76,13 +79,18 @@ export default class Signin extends Component {
               onChangeText={this.onChangeText('password')}
             />
             <TouchableOpacity
+              style={styles.registerTouch}
               hitSlop={{top: 15, left: 30, bottom: 30, right: 30}}
               onPress={() => navigate('Signup')}>
               <Text style={styles.registerLabel} category="label">
                 ลงทะเบียนที่นี่
               </Text>
             </TouchableOpacity>
-            <Button style={styles.button} size="medium" status="primary">
+            <Button
+              onPress={this.onSubmit}
+              style={styles.button}
+              size="medium"
+              status="primary">
               เข้าสู่ระบบ
             </Button>
           </Layout>
@@ -95,19 +103,20 @@ export default class Signin extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#edf1f7',
+  },
+  layout: {
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fafafa',
-  },
-  layout: {
-    marginLeft: 14,
-    marginRight: 14,
-    backgroundColor: '#fafafa',
+    paddingLeft: 14,
+    paddingRight: 14,
   },
   inputForm: {
     marginTop: 12,
-    width: 300,
+    marginLeft: 24,
+    marginRight: 24,
   },
   button: {
     marginTop: 24,
@@ -119,9 +128,13 @@ const styles = StyleSheet.create({
   textColor: {
     color: '#2c3d70',
   },
+  registerTouch: {
+    marginTop: 12,
+    marginRight: 24,
+    alignSelf: 'flex-end',
+  },
   registerLabel: {
     color: '#2c3d70',
-    marginTop: 12,
     alignSelf: 'flex-end',
     textDecorationLine: 'underline',
   },
