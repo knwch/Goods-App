@@ -2,6 +2,7 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {connect, Provider} from 'react-redux';
 import {ApplicationProvider} from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import GoodStack from './src/routes/GoodStack';
@@ -15,6 +16,7 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
+      {/* <Provider store={store}> */}
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={({route}) => ({
@@ -55,6 +57,7 @@ export default function App() {
           <Tab.Screen name="Account" component={AccountStack} />
         </Tab.Navigator>
       </NavigationContainer>
+      {/* </Provider> */}
     </ApplicationProvider>
   );
 }
