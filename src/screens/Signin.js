@@ -47,22 +47,25 @@ export default class Signin extends Component {
     );
   };
 
+  onSubmit = () => {};
+
   render() {
     const {navigate} = this.props.navigation;
     const {email, password, secureTextEntry} = this.state;
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView
-          style={styles.container}
-          // eslint-disable-next-line eqeqeq
-          behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={100}
-          enabled>
+      <KeyboardAvoidingView
+        style={styles.container}
+        // eslint-disable-next-line eqeqeq
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={100}
+        enabled>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <Layout style={styles.layout} level="3">
             <Input
               style={styles.inputForm}
               value={email}
               name="email"
+              autoCapitalize="none"
               label={this.labelInput('อีเมล')}
               onChangeText={this.onChangeText('email')}
             />
@@ -83,12 +86,16 @@ export default class Signin extends Component {
                 ลงทะเบียนที่นี่
               </Text>
             </TouchableOpacity>
-            <Button style={styles.button} size="medium" status="primary">
+            <Button
+              onPress={this.onSubmit}
+              style={styles.button}
+              size="medium"
+              status="primary">
               เข้าสู่ระบบ
             </Button>
           </Layout>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -96,19 +103,20 @@ export default class Signin extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#edf1f7',
+  },
+  layout: {
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fafafa',
-  },
-  layout: {
-    marginLeft: 14,
-    marginRight: 14,
-    backgroundColor: '#fafafa',
+    paddingLeft: 14,
+    paddingRight: 14,
   },
   inputForm: {
     marginTop: 12,
-    width: 300,
+    marginLeft: 24,
+    marginRight: 24,
   },
   button: {
     marginTop: 24,
@@ -122,6 +130,7 @@ const styles = StyleSheet.create({
   },
   registerTouch: {
     marginTop: 12,
+    marginRight: 24,
     alignSelf: 'flex-end',
   },
   registerLabel: {
