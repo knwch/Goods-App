@@ -51,13 +51,13 @@ export default class Signin extends Component {
     const {navigate} = this.props.navigation;
     const {email, password, secureTextEntry} = this.state;
     return (
-      <KeyboardAvoidingView
-        style={styles.container}
-        // eslint-disable-next-line eqeqeq
-        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={100}
-        enabled>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          // eslint-disable-next-line eqeqeq
+          behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={100}
+          enabled>
           <Layout style={styles.layout} level="3">
             <Input
               style={styles.inputForm}
@@ -76,6 +76,7 @@ export default class Signin extends Component {
               onChangeText={this.onChangeText('password')}
             />
             <TouchableOpacity
+              style={styles.registerTouch}
               hitSlop={{top: 15, left: 30, bottom: 30, right: 30}}
               onPress={() => navigate('Signup')}>
               <Text style={styles.registerLabel} category="label">
@@ -86,8 +87,8 @@ export default class Signin extends Component {
               เข้าสู่ระบบ
             </Button>
           </Layout>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -119,9 +120,12 @@ const styles = StyleSheet.create({
   textColor: {
     color: '#2c3d70',
   },
+  registerTouch: {
+    marginTop: 12,
+    alignSelf: 'flex-end',
+  },
   registerLabel: {
     color: '#2c3d70',
-    marginTop: 12,
     alignSelf: 'flex-end',
     textDecorationLine: 'underline',
   },
