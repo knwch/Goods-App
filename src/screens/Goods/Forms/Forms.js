@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   ScrollView,
-  Text,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
@@ -10,7 +9,14 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Layout, Input, Button, Select, SelectItem} from '@ui-kitten/components';
+import {
+  Layout,
+  Input,
+  Button,
+  Select,
+  SelectItem,
+  Text,
+} from '@ui-kitten/components';
 
 const ChevronIcon = () => (
   <Ionicons name={'chevron-down'} size={20} color="#2c3d70" />
@@ -68,7 +74,7 @@ export default class Forms extends Component {
     return <Text style={styles.textColor}>{text}</Text>;
   };
 
-  renderOption = title => <SelectItem title={title} />;
+  renderOption = (title, index) => <SelectItem key={index} title={title} />;
 
   render() {
     const {navigate} = this.props.navigation;
@@ -95,6 +101,7 @@ export default class Forms extends Component {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView>
             <Layout style={styles.layout} level="3">
+              <Text style={styles.header}>เพิ่มสินค้าใหม่ของคุณ</Text>
               <Input
                 style={styles.inputform}
                 textStyle={styles.placeholder}
@@ -228,10 +235,11 @@ const styles = StyleSheet.create({
     borderColor: '#2c3d70',
   },
   textColor: {
-    fontFamily: 'Sarabun-Bold',
+    fontFamily: 'Sarabun-Medium',
     color: '#2c3d70',
   },
   placeholder: {
     fontFamily: 'Sarabun-Regular',
   },
+  header: {marginTop: 12, fontFamily: 'Kanit-Regular', fontSize: 24},
 });
