@@ -241,5 +241,10 @@ const styles = StyleSheet.create({
   placeholder: {
     fontFamily: 'Sarabun-Regular',
   },
-  header: {marginTop: 12, fontFamily: 'Kanit-Regular', fontSize: 24},
+  header: {
+    color: '#2c3d70',
+    marginTop: 12,
+    fontFamily: 'Kanit-Regular',
+    fontSize: 24,
+  },
 });
