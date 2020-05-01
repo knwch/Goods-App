@@ -55,6 +55,11 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Kanit-Bold.ttf</string>
+		<string>Kanit-Light.ttf</string>
+		<string>Kanit-Medium.ttf</string>
+		<string>Kanit-Regular.ttf</string>
+		<string>Kanit-SemiBold.ttf</string>
 		<string>Sarabun-Bold.ttf</string>
 		<string>Sarabun-Light.ttf</string>
 		<string>Sarabun-Medium.ttf</string>

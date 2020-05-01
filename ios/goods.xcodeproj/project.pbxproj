@@ -20,11 +20,16 @@
 		424A91D223124203418B3A55 /* libPods-goods-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C255FA1B2A6CC54A182FA632 /* libPods-goods-tvOSTests.a */; };
 		5AF8E586FA82CD3C1C4FE144 /* libPods-goods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 890D4CA1532DF3F0BCF32304 /* libPods-goods.a */; };
 		729EDE979794C1A0047BE87C /* libPods-goods-goodsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D40A45430A573A320378F7DE /* libPods-goods-goodsTests.a */; };
-		826290B3245B5E4F006D84CE /* Sarabun-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 826290AE245B5E4E006D84CE /* Sarabun-Light.ttf */; };
-		826290B4245B5E4F006D84CE /* Sarabun-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 826290AF245B5E4E006D84CE /* Sarabun-Regular.ttf */; };
-		826290B5245B5E4F006D84CE /* Sarabun-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 826290B0245B5E4E006D84CE /* Sarabun-Bold.ttf */; };
-		826290B6245B5E4F006D84CE /* Sarabun-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 826290B1245B5E4E006D84CE /* Sarabun-Medium.ttf */; };
-		826290B7245B5E4F006D84CE /* Sarabun-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 826290B2245B5E4F006D84CE /* Sarabun-SemiBold.ttf */; };
+		822ABA80245C7EEF00BC5485 /* Sarabun-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA76245C7EEE00BC5485 /* Sarabun-Bold.ttf */; };
+		822ABA81245C7EEF00BC5485 /* Kanit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA77245C7EEE00BC5485 /* Kanit-Bold.ttf */; };
+		822ABA82245C7EEF00BC5485 /* Kanit-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA78245C7EEE00BC5485 /* Kanit-Light.ttf */; };
+		822ABA83245C7EEF00BC5485 /* Kanit-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA79245C7EEE00BC5485 /* Kanit-Medium.ttf */; };
+		822ABA84245C7EEF00BC5485 /* Sarabun-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA7A245C7EEE00BC5485 /* Sarabun-Regular.ttf */; };
+		822ABA85245C7EEF00BC5485 /* Kanit-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA7B245C7EEE00BC5485 /* Kanit-Regular.ttf */; };
+		822ABA86245C7EEF00BC5485 /* Sarabun-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA7C245C7EEE00BC5485 /* Sarabun-SemiBold.ttf */; };
+		822ABA87245C7EEF00BC5485 /* Sarabun-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA7D245C7EEE00BC5485 /* Sarabun-Light.ttf */; };
+		822ABA88245C7EEF00BC5485 /* Sarabun-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA7E245C7EEE00BC5485 /* Sarabun-Medium.ttf */; };
+		822ABA89245C7EEF00BC5485 /* Kanit-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA7F245C7EEF00BC5485 /* Kanit-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,11 +70,16 @@
 		5CFE384093203E7B77626421 /* Pods-goods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-goods.release.xcconfig"; path = "Target Support Files/Pods-goods/Pods-goods.release.xcconfig"; sourceTree = "<group>"; };
 		6EDD44C39F853C601B5BBD69 /* Pods-goods-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-goods-tvOS.release.xcconfig"; path = "Target Support Files/Pods-goods-tvOS/Pods-goods-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		7879B08B8DF33FE96E764B4A /* Pods-goods-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-goods-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-goods-tvOSTests/Pods-goods-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		826290AE245B5E4E006D84CE /* Sarabun-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Sarabun-Light.ttf"; path = "../../assets/fonts/Sarabun-Light.ttf"; sourceTree = "<group>"; };
-		826290AF245B5E4E006D84CE /* Sarabun-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Sarabun-Regular.ttf"; path = "../../assets/fonts/Sarabun-Regular.ttf"; sourceTree = "<group>"; };
-		826290B0245B5E4E006D84CE /* Sarabun-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Sarabun-Bold.ttf"; path = "../../assets/fonts/Sarabun-Bold.ttf"; sourceTree = "<group>"; };
-		826290B1245B5E4E006D84CE /* Sarabun-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Sarabun-Medium.ttf"; path = "../../assets/fonts/Sarabun-Medium.ttf"; sourceTree = "<group>"; };
-		826290B2245B5E4F006D84CE /* Sarabun-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Sarabun-SemiBold.ttf"; path = "../../assets/fonts/Sarabun-SemiBold.ttf"; sourceTree = "<group>"; };
+		822ABA76245C7EEE00BC5485 /* Sarabun-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sarabun-Bold.ttf"; sourceTree = "<group>"; };
+		822ABA77245C7EEE00BC5485 /* Kanit-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kanit-Bold.ttf"; sourceTree = "<group>"; };
+		822ABA78245C7EEE00BC5485 /* Kanit-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kanit-Light.ttf"; sourceTree = "<group>"; };
+		822ABA79245C7EEE00BC5485 /* Kanit-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kanit-Medium.ttf"; sourceTree = "<group>"; };
+		822ABA7A245C7EEE00BC5485 /* Sarabun-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sarabun-Regular.ttf"; sourceTree = "<group>"; };
+		822ABA7B245C7EEE00BC5485 /* Kanit-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kanit-Regular.ttf"; sourceTree = "<group>"; };
+		822ABA7C245C7EEE00BC5485 /* Sarabun-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sarabun-SemiBold.ttf"; sourceTree = "<group>"; };
+		822ABA7D245C7EEE00BC5485 /* Sarabun-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sarabun-Light.ttf"; sourceTree = "<group>"; };
+		822ABA7E245C7EEE00BC5485 /* Sarabun-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sarabun-Medium.ttf"; sourceTree = "<group>"; };
+		822ABA7F245C7EEF00BC5485 /* Kanit-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kanit-SemiBold.ttf"; sourceTree = "<group>"; };
 		890D4CA1532DF3F0BCF32304 /* libPods-goods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-goods.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C255FA1B2A6CC54A182FA632 /* libPods-goods-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-goods-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D40A45430A573A320378F7DE /* libPods-goods-goodsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-goods-goodsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -181,14 +191,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		826290AD245B5E22006D84CE /* fonts */ = {
+		822ABA75245C7E5800BC5485 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
-				826290B0245B5E4E006D84CE /* Sarabun-Bold.ttf */,
-				826290AE245B5E4E006D84CE /* Sarabun-Light.ttf */,
-				826290B1245B5E4E006D84CE /* Sarabun-Medium.ttf */,
-				826290AF245B5E4E006D84CE /* Sarabun-Regular.ttf */,
-				826290B2245B5E4F006D84CE /* Sarabun-SemiBold.ttf */,
+				822ABA77245C7EEE00BC5485 /* Kanit-Bold.ttf */,
+				822ABA78245C7EEE00BC5485 /* Kanit-Light.ttf */,
+				822ABA79245C7EEE00BC5485 /* Kanit-Medium.ttf */,
+				822ABA7B245C7EEE00BC5485 /* Kanit-Regular.ttf */,
+				822ABA7F245C7EEF00BC5485 /* Kanit-SemiBold.ttf */,
+				822ABA76245C7EEE00BC5485 /* Sarabun-Bold.ttf */,
+				822ABA7D245C7EEE00BC5485 /* Sarabun-Light.ttf */,
+				822ABA7E245C7EEE00BC5485 /* Sarabun-Medium.ttf */,
+				822ABA7A245C7EEE00BC5485 /* Sarabun-Regular.ttf */,
+				822ABA7C245C7EEE00BC5485 /* Sarabun-SemiBold.ttf */,
 			);
 			path = fonts;
 			sourceTree = "<group>";
@@ -203,7 +218,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				826290AD245B5E22006D84CE /* fonts */,
+				822ABA75245C7E5800BC5485 /* fonts */,
 				13B07FAE1A68108700A75B9A /* goods */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* goodsTests */,
@@ -373,13 +388,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				826290B6245B5E4F006D84CE /* Sarabun-Medium.ttf in Resources */,
-				826290B3245B5E4F006D84CE /* Sarabun-Light.ttf in Resources */,
+				822ABA87245C7EEF00BC5485 /* Sarabun-Light.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				826290B4245B5E4F006D84CE /* Sarabun-Regular.ttf in Resources */,
+				822ABA83245C7EEF00BC5485 /* Kanit-Medium.ttf in Resources */,
+				822ABA80245C7EEF00BC5485 /* Sarabun-Bold.ttf in Resources */,
+				822ABA85245C7EEF00BC5485 /* Kanit-Regular.ttf in Resources */,
+				822ABA89245C7EEF00BC5485 /* Kanit-SemiBold.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				826290B7245B5E4F006D84CE /* Sarabun-SemiBold.ttf in Resources */,
-				826290B5245B5E4F006D84CE /* Sarabun-Bold.ttf in Resources */,
+				822ABA88245C7EEF00BC5485 /* Sarabun-Medium.ttf in Resources */,
+				822ABA86245C7EEF00BC5485 /* Sarabun-SemiBold.ttf in Resources */,
+				822ABA82245C7EEF00BC5485 /* Kanit-Light.ttf in Resources */,
+				822ABA84245C7EEF00BC5485 /* Sarabun-Regular.ttf in Resources */,
+				822ABA81245C7EEF00BC5485 /* Kanit-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
