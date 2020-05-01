@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   ScrollView,
-  Text,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
@@ -10,7 +9,14 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Layout, Input, Button, Select, SelectItem} from '@ui-kitten/components';
+import {
+  Layout,
+  Input,
+  Button,
+  Select,
+  SelectItem,
+  Text,
+} from '@ui-kitten/components';
 
 const ChevronIcon = () => (
   <Ionicons name={'chevron-down'} size={20} color="#2c3d70" />
@@ -20,13 +26,15 @@ export default class Forms extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      typedata: ['Developer', 'Designer', 'Product Manager'],
-      title: '',
+      typeData: ['ขาย', 'บริจาค', 'แลกเปลี่ยน'],
+      goodsData: ['อาหาร', 'เจลหรือหน้ากากอนามัย', 'อื่นๆ'],
+      index: '',
+      topic: '',
       type: '',
       goods: '',
       price: '',
       describe: '',
-      telephone: '',
+      phone: '',
       contact: '',
       location: {
         lng: undefined,
@@ -51,16 +59,38 @@ export default class Forms extends Component {
     }
   }
 
-  onChange = event => {
-    this.setState({value: event});
+  onChangeText = name => text => this.setState({[name]: text});
+
+  onSelectOption = name => index => {
+    const {typeData, goodsData} = this.state;
+    if (name === 'type') {
+      this.setState({[name]: typeData[index.row]});
+    } else if (name === 'goods') {
+      this.setState({[name]: goodsData[index.row]});
+    }
   };
 
   labelInput = text => {
     return <Text style={styles.textColor}>{text}</Text>;
   };
 
+  renderOption = (title, index) => <SelectItem key={index} title={title} />;
+
   render() {
     const {navigate} = this.props.navigation;
+    const {
+      typeData,
+      goodsData,
+      topic,
+      type,
+      goods,
+      price,
+      describe,
+      phone,
+      contact,
+      address,
+    } = this.state;
+
     return (
       <KeyboardAvoidingView
         style={styles.container}
@@ -71,76 +101,78 @@ export default class Forms extends Component {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView>
             <Layout style={styles.layout} level="3">
+              <Text style={styles.header}>เพิ่มสินค้าใหม่ของคุณ</Text>
               <Input
                 style={styles.inputform}
-                value={this.state.title}
-                name="title"
+                textStyle={styles.placeholder}
+                value={topic}
+                name="topic"
                 label={this.labelInput('หัวข้อ *')}
                 placeholder="ระบุตามที่ต้องการ"
-                // accessoryRight={renderIcon}
-                // captionIcon={AlertIcon}
-                // secureTextEntry={secureTextEntry}
-                onChangeText={this.onChange}
+                onChangeText={this.onChangeText('topic')}
               />
               <Select
                 style={styles.inputform}
-                name="goods"
+                value={type}
+                name="type"
                 label={this.labelInput('ประเภท *')}
                 placeholder="เลือก"
                 accessoryRight={ChevronIcon}
-                onSelect={index => this.setState({index})}>
-                <SelectItem title="Option 1" />
-                <SelectItem title="Option 2" />
-                <SelectItem title="Option 3" />
+                onSelect={this.onSelectOption('type')}>
+                {typeData.map(this.renderOption)}
               </Select>
               <Layout style={styles.row} level="3">
                 <Select
                   style={styles.select}
+                  value={goods}
                   name="goods"
                   label={this.labelInput('สินค้า *')}
                   placeholder="เลือก"
                   accessoryRight={ChevronIcon}
-                  onSelect={index => this.setState({index})}>
-                  <SelectItem title="Option 1" />
-                  <SelectItem title="Option 2" />
-                  <SelectItem title="Option 3" />
+                  onSelect={this.onSelectOption('goods')}>
+                  {goodsData.map(this.renderOption)}
                 </Select>
                 <Input
                   style={styles.select}
-                  // value={value}
+                  textStyle={styles.placeholder}
+                  value={price}
                   name="price"
                   label={this.labelInput('ราคา *')}
                   placeholder="เช่น 42 - 80"
-                  onChangeText={this.onChange}
+                  onChangeText={this.onChangeText('price')}
                 />
               </Layout>
               <Input
                 style={styles.inputform}
-                // value={value}
-                name="detail"
+                textStyle={styles.placeholder}
+                value={describe}
+                name="describe"
                 label={this.labelInput('รายละเอียดสินค้าเพิ่มเติม')}
                 placeholder=""
-                onChangeText={this.onChange}
+                onChangeText={this.onChangeText('describe')}
               />
               <Input
                 style={styles.inputform}
-                // value={value}
-                name="telephone"
+                textStyle={styles.placeholder}
+                value={phone}
+                name="phone"
                 label={this.labelInput('เบอร์ติดต่อ')}
                 placeholder="เช่น 0824686293"
-                onChangeText={this.onChange}
+                onChangeText={this.onChangeText('phone')}
               />
               <Input
                 style={styles.inputform}
-                // value={value}
+                textStyle={styles.placeholder}
+                value={contact}
                 name="contact"
                 label={this.labelInput('ช่องทางการติดต่อเพิ่มเติม')}
                 placeholder="เช่น Line, Facebook"
-                onChangeText={this.onChange}
+                onChangeText={this.onChangeText('contact')}
               />
               <Input
                 style={styles.inputform}
-                value={this.state.address}
+                textStyle={styles.placeholder}
+                value={address}
                 name="address"
                 label={this.labelInput('ปักหมุดสถานที่ *')}
                 placeholder="กดสัญลักษณ์ด้านขวาเพื่อปักหมุด"
@@ -159,10 +191,10 @@ export default class Forms extends Component {
                     />
                   </TouchableOpacity>
                 )}
-                onChangeText={this.onChange}
+                onChangeText={this.onChangeText('address')}
               />
               <Button style={styles.button} size="medium" status="primary">
-                เพิ่มสินค้า
+                ยืนยัน
               </Button>
             </Layout>
           </ScrollView>
@@ -176,13 +208,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#edf1f7',
   },
   row: {
     marginTop: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#edf1f7',
   },
   select: {
     flex: 1,
@@ -191,7 +223,7 @@ const styles = StyleSheet.create({
   layout: {
     paddingLeft: 14,
     paddingRight: 14,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#edf1f7',
   },
   inputform: {
     marginTop: 12,
@@ -203,6 +235,16 @@ const styles = StyleSheet.create({
     borderColor: '#2c3d70',
   },
   textColor: {
+    fontFamily: 'Sarabun-Medium',
     color: '#2c3d70',
+  },
+  placeholder: {
+    fontFamily: 'Sarabun-Regular',
+  },
+  header: {
+    color: '#2c3d70',
+    marginTop: 12,
+    fontFamily: 'Kanit-Regular',
+    fontSize: 24,
   },
 });
