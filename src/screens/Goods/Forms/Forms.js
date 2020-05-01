@@ -21,12 +21,12 @@ export default class Forms extends Component {
     super(props);
     this.state = {
       typedata: ['Developer', 'Designer', 'Product Manager'],
-      title: '',
+      topic: '',
       type: '',
       goods: '',
       price: '',
       describe: '',
-      telephone: '',
+      phone: '',
       contact: '',
       location: {
         lng: undefined,
@@ -51,9 +51,7 @@ export default class Forms extends Component {
     }
   }
 
-  onChange = event => {
-    this.setState({value: event});
-  };
+  onChangeText = name => text => this.setState({[name]: text});
 
   labelInput = text => {
     return <Text style={styles.textColor}>{text}</Text>;
@@ -74,13 +72,10 @@ export default class Forms extends Component {
               <Input
                 style={styles.inputform}
                 value={this.state.title}
-                name="title"
+                name="topic"
                 label={this.labelInput('หัวข้อ *')}
                 placeholder="ระบุตามที่ต้องการ"
-                // accessoryRight={renderIcon}
-                // captionIcon={AlertIcon}
-                // secureTextEntry={secureTextEntry}
-                onChangeText={this.onChange}
+                onChangeText={this.onChangeText('topic')}
               />
               <Select
                 style={styles.inputform}
@@ -111,24 +106,24 @@ export default class Forms extends Component {
                   name="price"
                   label={this.labelInput('ราคา *')}
                   placeholder="เช่น 42 - 80"
-                  onChangeText={this.onChange}
+                  onChangeText={this.onChangeText('price')}
                 />
               </Layout>
               <Input
                 style={styles.inputform}
                 // value={value}
-                name="detail"
+                name="describe"
                 label={this.labelInput('รายละเอียดสินค้าเพิ่มเติม')}
                 placeholder=""
-                onChangeText={this.onChange}
+                onChangeText={this.onChangeText('describe')}
               />
               <Input
                 style={styles.inputform}
                 // value={value}
-                name="telephone"
+                name="phone"
                 label={this.labelInput('เบอร์ติดต่อ')}
                 placeholder="เช่น 0824686293"
-                onChangeText={this.onChange}
+                onChangeText={this.onChangeText('phone')}
               />
               <Input
                 style={styles.inputform}
@@ -136,7 +131,7 @@ export default class Forms extends Component {
                 name="contact"
                 label={this.labelInput('ช่องทางการติดต่อเพิ่มเติม')}
                 placeholder="เช่น Line, Facebook"
-                onChangeText={this.onChange}
+                onChangeText={this.onChangeText('contact')}
               />
               <Input
                 style={styles.inputform}
@@ -159,7 +154,7 @@ export default class Forms extends Component {
                     />
                   </TouchableOpacity>
                 )}
-                onChangeText={this.onChange}
+                onChangeText={this.onChangeText('address')}
               />
               <Button style={styles.button} size="medium" status="primary">
                 เพิ่มสินค้า
@@ -176,13 +171,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#edf1f7',
   },
   row: {
     marginTop: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#edf1f7',
   },
   select: {
     flex: 1,
@@ -191,7 +186,7 @@ const styles = StyleSheet.create({
   layout: {
     paddingLeft: 14,
     paddingRight: 14,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#edf1f7',
   },
   inputform: {
     marginTop: 12,
