@@ -20,7 +20,9 @@ export default class Forms extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      typedata: ['Developer', 'Designer', 'Product Manager'],
+      typeData: ['ขาย', 'บริจาค', 'แลกเปลี่ยน'],
+      goodsData: ['อาหาร', 'เจลหรือหน้ากากอนามัย', 'อื่นๆ'],
+      index: '',
       topic: '',
       type: '',
       goods: '',
@@ -53,12 +55,36 @@ export default class Forms extends Component {
 
   onChangeText = name => text => this.setState({[name]: text});
 
+  onSelectOption = name => index => {
+    const {typeData, goodsData} = this.state;
+    if (name === 'type') {
+      this.setState({[name]: typeData[index.row]});
+    } else if (name === 'goods') {
+      this.setState({[name]: goodsData[index.row]});
+    }
+  };
+
   labelInput = text => {
     return <Text style={styles.textColor}>{text}</Text>;
   };
 
+  renderOption = title => <SelectItem title={title} />;
+
   render() {
     const {navigate} = this.props.navigation;
+    const {
+      typeData,
+      goodsData,
+      topic,
+      type,
+      goods,
+      price,
+      describe,
+      phone,
+      contact,
+      address,
+    } = this.state;
+
     return (
       <KeyboardAvoidingView
         style={styles.container}
@@ -71,7 +97,8 @@ export default class Forms extends Component {
             <Layout style={styles.layout} level="3">
               <Input
                 style={styles.inputform}
-                value={this.state.title}
+                textStyle={styles.placeholder}
+                value={topic}
                 name="topic"
                 label={this.labelInput('หัวข้อ *')}
                 placeholder="ระบุตามที่ต้องการ"
@@ -79,30 +106,29 @@ export default class Forms extends Component {
               />
               <Select
                 style={styles.inputform}
-                name="goods"
+                value={type}
+                name="type"
                 label={this.labelInput('ประเภท *')}
                 placeholder="เลือก"
                 accessoryRight={ChevronIcon}
-                onSelect={index => this.setState({index})}>
-                <SelectItem title="Option 1" />
-                <SelectItem title="Option 2" />
-                <SelectItem title="Option 3" />
+                onSelect={this.onSelectOption('type')}>
+                {typeData.map(this.renderOption)}
               </Select>
               <Layout style={styles.row} level="3">
                 <Select
                   style={styles.select}
+                  value={goods}
                   name="goods"
                   label={this.labelInput('สินค้า *')}
                   placeholder="เลือก"
                   accessoryRight={ChevronIcon}
-                  onSelect={index => this.setState({index})}>
-                  <SelectItem title="Option 1" />
-                  <SelectItem title="Option 2" />
-                  <SelectItem title="Option 3" />
+                  onSelect={this.onSelectOption('goods')}>
+                  {goodsData.map(this.renderOption)}
                 </Select>
                 <Input
                   style={styles.select}
-                  // value={value}
+                  textStyle={styles.placeholder}
+                  value={price}
                   name="price"
                   label={this.labelInput('ราคา *')}
                   placeholder="เช่น 42 - 80"
@@ -111,7 +137,8 @@ export default class Forms extends Component {
               </Layout>
               <Input
                 style={styles.inputform}
-                // value={value}
+                textStyle={styles.placeholder}
+                value={describe}
                 name="describe"
                 label={this.labelInput('รายละเอียดสินค้าเพิ่มเติม')}
                 placeholder=""
@@ -119,7 +146,8 @@ export default class Forms extends Component {
               />
               <Input
                 style={styles.inputform}
-                // value={value}
+                textStyle={styles.placeholder}
+                value={phone}
                 name="phone"
                 label={this.labelInput('เบอร์ติดต่อ')}
                 placeholder="เช่น 0824686293"
@@ -127,7 +155,8 @@ export default class Forms extends Component {
               />
               <Input
                 style={styles.inputform}
-                // value={value}
+                textStyle={styles.placeholder}
+                value={contact}
                 name="contact"
                 label={this.labelInput('ช่องทางการติดต่อเพิ่มเติม')}
                 placeholder="เช่น Line, Facebook"
@@ -135,7 +164,8 @@ export default class Forms extends Component {
               />
               <Input
                 style={styles.inputform}
-                value={this.state.address}
+                textStyle={styles.placeholder}
+                value={address}
                 name="address"
                 label={this.labelInput('ปักหมุดสถานที่ *')}
                 placeholder="กดสัญลักษณ์ด้านขวาเพื่อปักหมุด"
@@ -157,7 +187,7 @@ export default class Forms extends Component {
                 onChangeText={this.onChangeText('address')}
               />
               <Button style={styles.button} size="medium" status="primary">
-                เพิ่มสินค้า
+                ยืนยัน
               </Button>
             </Layout>
           </ScrollView>
@@ -198,6 +228,10 @@ const styles = StyleSheet.create({
     borderColor: '#2c3d70',
   },
   textColor: {
+    fontFamily: 'Sarabun-Bold',
     color: '#2c3d70',
+  },
+  placeholder: {
+    fontFamily: 'Sarabun-Regular',
   },
 });
