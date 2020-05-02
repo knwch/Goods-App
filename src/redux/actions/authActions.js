@@ -37,21 +37,21 @@ export const signoutUser = () => async dispatch => {
 };
 
 // loading
-const setUserLoading = () => {
+export const setUserLoading = () => {
   return {
     type: SET_LOADING,
   };
 };
 
 // close loading
-const setUnloading = () => {
+export const setUnloading = () => {
   return {
     type: UN_LOADING,
   };
 };
 
 // set current user
-const setCurrentUser = decode => {
+export const setCurrentUser = decode => {
   return {
     type: SET_CURRENT_USER,
     payload: decode,
