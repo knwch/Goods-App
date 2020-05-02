@@ -5,15 +5,16 @@ import Signin from '../screens/Signin';
 import Lists from '../screens/Goods/Lists';
 import Forms from '../screens/Goods/Forms/Forms';
 import MapPicker from '../screens/Goods/Forms/MapPicker';
+import {connect} from 'react-redux';
 
 const GoodStack = createStackNavigator();
 
-export default class GoodStackScreen extends Component {
+class GoodStackScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       typedata: ['Developer', 'Designer', 'Product Manager'],
-      userToken: 'null',
+      userToken: null,
     };
   }
 
@@ -31,7 +32,7 @@ export default class GoodStackScreen extends Component {
           },
           headerTitleAlign: 'center',
         }}>
-        {this.state.userToken === null ? (
+        {this.props.auth.isAuthenticated === false ? (
           <>
             <GoodStack.Screen
               name="Signin"
@@ -67,3 +68,11 @@ export default class GoodStackScreen extends Component {
     );
   }
 }
+
+const mapStatetoProps = state => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStatetoProps)(GoodStackScreen);

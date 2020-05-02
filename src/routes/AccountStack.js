@@ -3,10 +3,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Account from '../screens/Account';
 import Signup from '../screens/Signup';
 import Signin from '../screens/Signin';
-
+import {connect} from 'react-redux';
 const AccountStack = createStackNavigator();
 
-export default class AccountStackScreen extends Component {
+class AccountStackScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,7 @@ export default class AccountStackScreen extends Component {
           },
           headerTitleAlign: 'center',
         }}>
-        {this.state.userToken == null ? (
+        {this.props.auth.isAuthenticated === false ? (
           <>
             <AccountStack.Screen
               name="Signin"
@@ -51,3 +51,11 @@ export default class AccountStackScreen extends Component {
     );
   }
 }
+
+const mapStatetoProps = state => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStatetoProps)(AccountStackScreen);

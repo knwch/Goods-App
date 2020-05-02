@@ -13,26 +13,27 @@ import * as Keychain from 'react-native-keychain';
 import setAuthToken from './src/utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 import {setCurrentUser, signoutUser} from './src/redux/actions/authActions';
+let axiosDefaults = require('axios/lib/defaults');
+axiosDefaults.baseURL = 'https://goods-service.herokuapp.com/';
 Ionicons.loadFont();
 
 const Tab = createBottomTabNavigator();
 
 const getToken = async () => {
   try {
-    console.log('function');
     const token = await Keychain.getGenericPassword();
     if (token) {
-      setAuthToken(token);
-      const decoded = jwt_decode(token);
+      const {password} = token;
+      setAuthToken(password);
+      const decoded = jwt_decode(password);
       store.dispatch(setCurrentUser(decoded));
       if (decoded.exp < Date.now() / 1000) {
+        console.log('token exp');
         store.dispatch(signoutUser());
       }
-    } else {
-      console.log('login');
     }
   } catch (err) {
-    console.error(err);
+    console.log(err);
   }
 };
 
