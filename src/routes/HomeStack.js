@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Image, StyleSheet} from 'react-native';
-import Home from '../screens/Home';
+// import Home from '../screens/Home';
 import Map from '../screens/Map';
 
 const HomeStack = createStackNavigator();
@@ -10,7 +10,7 @@ export default class HomeStackScreen extends React.Component {
   render() {
     return (
       <HomeStack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Map"
         screenOptions={{
           headerStyle: {
             backgroundColor: '#2c3d70',
@@ -28,7 +28,7 @@ export default class HomeStackScreen extends React.Component {
             />
           ),
         }}>
-        <HomeStack.Screen name="Home" component={Home} />
+        {/* <HomeStack.Screen name="Home" component={Home} /> */}
         <HomeStack.Screen
           name="Map"
           component={Map}
