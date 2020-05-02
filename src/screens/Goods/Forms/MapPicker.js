@@ -1,33 +1,17 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, PermissionsAndroid, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  PermissionsAndroid,
+  Platform,
+  Image,
+} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {Button} from '@ui-kitten/components';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1Ijoia253Y2giLCJhIjoiY2s5Zno2cGg2MGdqazNubzkzaHIzZmppMyJ9.mSjQ3XOe2IKTm1Ub-TwJZw',
 );
-
-const requestCameraPermission = async () => {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: 'Goods App Location Permission',
-        message: 'Goods App needs access to your location ',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('You can use the location');
-    } else {
-      console.log('Location permission denied');
-    }
-  } catch (err) {
-    console.warn(err);
-  }
-};
 
 export default class MapPicker extends Component {
   constructor(props) {
@@ -66,8 +50,25 @@ export default class MapPicker extends Component {
 
   componentDidMount() {
     MapboxGL.setTelemetryEnabled(false);
-    requestCameraPermission;
+    if (Platform.OS === 'android') {
+      this.requestLocationPermission();
+    }
   }
+
+  requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the location');
+      } else {
+        console.log('Location permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
 
   fetchAddress = (lng, lat) => {
     fetch(
