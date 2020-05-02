@@ -9,8 +9,12 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Layout, Input, Button, Text} from '@ui-kitten/components';
+import {signinUser} from '../redux/actions/authActions';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-export default class Signin extends Component {
+class Signin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,6 +22,26 @@ export default class Signin extends Component {
       password: '',
       secureTextEntry: true,
     };
+  }
+
+  componentDidMount() {
+    const state = this.state;
+    console.log('Signin');
+    if (this.props.auth.isAuthecticated === true) {
+      this.props.navigation.navigate('Home');
+    }
+    this.setState({
+      ...state,
+      loading: this.props.auth.loading,
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.auth.loading !== prevProps.auth.loading) {
+      this.setState({
+        loading: this.props.auth.loading,
+      });
+    }
   }
 
   onChangeText = name => text => this.setState({[name]: text});
@@ -47,7 +71,11 @@ export default class Signin extends Component {
     );
   };
 
-  onSubmit = () => {};
+  onSubmit = async () => {
+    const _user_data = this.state;
+    delete _user_data.secureTextEntry;
+    await this.props.signinUser(_user_data);
+  };
 
   render() {
     const {navigate} = this.props.navigation;
@@ -61,6 +89,11 @@ export default class Signin extends Component {
         enabled>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <Layout style={styles.layout} level="3">
+            <Spinner
+              visible={this.state.loading}
+              textContent={'Loading...'}
+              textStyle={styles.spinnerTextStyle}
+            />
             <Input
               style={styles.inputForm}
               value={email}
@@ -138,4 +171,22 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     textDecorationLine: 'underline',
   },
+  spinnerTextStyle: {
+    color: '#FFF',
+  },
 });
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({signinUser}, dispatch);
+};
+
+const mapStatetoProps = state => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(
+  mapStatetoProps,
+  mapDispatchToProps,
+)(Signin);

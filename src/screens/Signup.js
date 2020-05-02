@@ -9,8 +9,12 @@ import {
   Platform,
 } from 'react-native';
 import {Layout, Input, Button} from '@ui-kitten/components';
+import {signupUser} from '../redux/actions/authActions';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-export default class Signup extends Component {
+class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,10 +26,33 @@ export default class Signup extends Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated === true) {
+      this.props.navigation.navigate('Home');
+    }
+    this.setState({
+      ...this.state,
+      loading: this.props.auth.loading,
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.auth.loading !== prevProps.auth.loading) {
+      this.setState({
+        loading: this.props.auth.loading,
+      });
+    }
+  }
+
   onChangeText = name => text => this.setState({[name]: text});
 
   labelInput = text => {
     return <Text style={styles.textColor}>{text}</Text>;
+  };
+
+  onSubmit = async () => {
+    const _user_data = this.state;
+    await this.props.signupUser(_user_data);
   };
 
   render() {
@@ -41,11 +68,16 @@ export default class Signup extends Component {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView>
             <Layout style={styles.layout} level="3">
+              <Spinner
+                visible={this.state.loading}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+              />
               <Input
                 style={styles.inputForm}
                 value={email}
                 name="email"
-                autoCapitalize="characters"
+                autoCapitalize="none"
                 label={this.labelInput('อีเมล')}
                 onChangeText={this.onChangeText('email')}
               />
@@ -81,7 +113,11 @@ export default class Signup extends Component {
                   onChangeText={this.onChangeText('lname')}
                 />
               </Layout>
-              <Button style={styles.button} size="medium" status="primary">
+              <Button
+                style={styles.button}
+                size="medium"
+                status="primary"
+                onPress={this.onSubmit}>
                 ลงทะเบียน
               </Button>
             </Layout>
@@ -125,4 +161,22 @@ const styles = StyleSheet.create({
   textColor: {
     color: '#2c3d70',
   },
+  spinnerTextStyle: {
+    color: '#FFF',
+  },
 });
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({signupUser}, dispatch);
+};
+
+const mapStatetoProps = state => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(
+  mapStatetoProps,
+  mapDispatchToProps,
+)(Signup);
