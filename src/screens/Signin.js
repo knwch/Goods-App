@@ -29,7 +29,7 @@ class Signin extends Component {
   }
 
   componentDidMount() {
-    if (this.props.auth.isAuthecticated === true) {
+    if (this.props.auth.isAutheticated === true) {
       this.props.navigation.navigate('Map');
     }
   }
@@ -47,6 +47,7 @@ class Signin extends Component {
     const {validation} = this.state;
     this.setState({[name]: text});
 
+    // real-time check validate when user was submitted
     if (!_.isEmpty(validation)) {
       if (name === 'email') {
         validation[name] = validate('email', text);
@@ -93,12 +94,14 @@ class Signin extends Component {
     validation.password = validate('password', password);
 
     if (!validation.email && !validation.password) {
+      // if all valid then...
       const user_data = {
         email: email,
         password: password,
       };
       await this.props.signinUser(user_data);
     } else {
+      // if not valid then set validators to states
       this.setState({validation: validation});
     }
   };
