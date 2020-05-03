@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {Layout, Input, Button} from '@ui-kitten/components';
+import {Layout, Input, Button, Modal, Card} from '@ui-kitten/components';
 import {signupUser} from '../redux/actions/authActions';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -26,6 +26,7 @@ class Signup extends Component {
       fname: '',
       lname: '',
       validation: {},
+      isRegistered: false,
     };
   }
 
@@ -47,6 +48,8 @@ class Signup extends Component {
   onChangeText = name => text => {
     const {validation} = this.state;
     this.setState({[name]: text});
+
+    // real-time check validate when user was submitted
     if (!_.isEmpty(validation)) {
       if (name === 'email') {
         validation[name] = validate('email', text);
@@ -72,8 +75,18 @@ class Signup extends Component {
     return validation[name] == null ? 'basic' : 'danger';
   };
 
+  successRegisterModal = () => {
+    this.setState({isRegistered: true});
+  };
+
+  closeRegisterModal = () => {
+    const {goBack} = this.props.navigation;
+    goBack();
+  };
+
   onSubmit = async () => {
     const {email, password, passwordConfirm, fname, lname} = this.state;
+
     var validation = {};
     validation.email = validate('email', email);
     validation.password = validate('password', password);
@@ -91,6 +104,7 @@ class Signup extends Component {
       !validation.fname &&
       !validation.lname
     ) {
+      // if all valid (all values are null) then...
       const user_data = {
         email: email,
         password: password,
@@ -99,7 +113,9 @@ class Signup extends Component {
         lname: lname,
       };
       await this.props.signupUser(user_data);
+      this.successRegisterModal();
     } else {
+      // if not valid then set validators to states
       this.setState({validation: validation});
     }
   };
@@ -112,6 +128,7 @@ class Signup extends Component {
       fname,
       lname,
       validation,
+      isRegistered,
     } = this.state;
 
     return (
@@ -129,6 +146,19 @@ class Signup extends Component {
                 textContent={'Loading...'}
                 textStyle={styles.spinnerTextStyle}
               />
+
+              <Modal
+                visible={isRegistered}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={this.closeRegisterModal}>
+                <Card disabled={true}>
+                  <Text style={styles.modalLabel}>ลงทะเบียนสำเร็จ</Text>
+                  <Button onPress={this.closeRegisterModal}>
+                    <Text style={styles.buttonText}>รับทราบ</Text>
+                  </Button>
+                </Card>
+              </Modal>
+
               <Text style={styles.header}>สมัครสมาชิก</Text>
               <Input
                 style={styles.inputForm}
@@ -244,6 +274,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Sarabun-Medium',
     color: '#2c3d70',
   },
+  modalLabel: {
+    fontFamily: 'Kanit-Regular',
+    marginBottom: 8,
+    color: '#2c3d70',
+  },
   placeholder: {
     fontFamily: 'Sarabun-Regular',
   },
@@ -252,6 +287,9 @@ const styles = StyleSheet.create({
     marginTop: 12,
     fontFamily: 'Kanit-Regular',
     fontSize: 24,
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   spinnerTextStyle: {
     color: '#FFF',
