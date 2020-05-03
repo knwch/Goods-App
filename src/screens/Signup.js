@@ -129,6 +129,7 @@ class Signup extends Component {
                 textContent={'Loading...'}
                 textStyle={styles.spinnerTextStyle}
               />
+              <Text style={styles.header}>สมัครสมาชิก</Text>
               <Input
                 style={styles.inputForm}
                 textStyle={styles.placeholder}
@@ -245,6 +246,12 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     fontFamily: 'Sarabun-Regular',
+  },
+  header: {
+    color: '#2c3d70',
+    marginTop: 12,
+    fontFamily: 'Kanit-Regular',
+    fontSize: 24,
   },
   spinnerTextStyle: {
     color: '#FFF',
