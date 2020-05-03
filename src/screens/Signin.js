@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  Image,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Layout, Input, Button, Text} from '@ui-kitten/components';
@@ -119,12 +120,16 @@ class Signin extends Component {
               textContent={'Loading...'}
               textStyle={styles.spinnerTextStyle}
             />
+            <Image
+              style={styles.image}
+              source={require('../assets/goods-blue.png')}
+            />
             <Input
               style={styles.inputForm}
               textStyle={styles.placeholder}
               value={email}
               name="email"
-              keyboardType="default"
+              keyboardType="email-address"
               autoCapitalize="none"
               status={this.renderInputStatus('email')}
               caption={validation.email}
@@ -150,17 +155,18 @@ class Signin extends Component {
               style={styles.registerTouch}
               hitSlop={{top: 15, left: 30, bottom: 30, right: 30}}
               onPress={() => navigate('Signup')}>
-              <Text style={styles.registerLabel} category="label">
-                ลงทะเบียนที่นี่
-              </Text>
+              <Text style={styles.registerLabel}>ลงทะเบียนที่นี่</Text>
             </TouchableOpacity>
-            <Button
-              onPress={this.onSubmit}
-              style={styles.button}
-              size="medium"
-              status="primary">
-              เข้าสู่ระบบ
-            </Button>
+            <TouchableOpacity>
+              <Button
+                onPress={this.onSubmit}
+                style={styles.button}
+                size="medium"
+                status="primary"
+                activeOpacity={0.8}>
+                <Text style={styles.buttonText}>เข้าสู่ระบบ</Text>
+              </Button>
+            </TouchableOpacity>
           </Layout>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
@@ -193,6 +199,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#2c3d70',
     borderColor: '#2c3d70',
   },
+  buttonText: {
+    color: '#FFF',
+    fontFamily: 'Kanit-Medium',
+  },
   label: {
     fontFamily: 'Sarabun-Medium',
     color: '#2c3d70',
@@ -205,10 +215,16 @@ const styles = StyleSheet.create({
   registerLabel: {
     color: '#2c3d70',
     alignSelf: 'flex-end',
+    fontFamily: 'Kanit-Medium',
     textDecorationLine: 'underline',
   },
   placeholder: {
     fontFamily: 'Sarabun-Regular',
+  },
+  image: {
+    width: 125,
+    height: 50,
+    resizeMode: 'contain',
   },
   spinnerTextStyle: {
     color: '#FFF',
