@@ -18,16 +18,19 @@ export default class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      followUserLocation: true,
+      followUserLocation: false,
       followZoomLevel: 13,
     };
   }
 
-  componentDidMount() {
-    MapboxGL.setTelemetryEnabled(false);
+  UNSAFE_componentWillMount() {
     if (Platform.OS === 'android') {
       this.requestLocationPermission();
     }
+  }
+
+  componentDidMount() {
+    MapboxGL.setTelemetryEnabled(false);
   }
 
   requestLocationPermission = async () => {
@@ -76,7 +79,11 @@ export default class Map extends Component {
     return (
       <View style={styles.page}>
         <View style={styles.container}>
-          <MapboxGL.MapView style={styles.map}>
+          <MapboxGL.MapView
+            style={styles.map}
+            onDidFinishRenderingMapFully={r => {
+              this.setState({followUserLocation: true});
+            }}>
             <MapboxGL.UserLocation />
             <MapboxGL.Camera
               defaultSettings={{
@@ -85,6 +92,7 @@ export default class Map extends Component {
               }}
               followUserLocation={followUserLocation}
               followZoomLevel={followZoomLevel}
+              followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
             />
           </MapboxGL.MapView>
           <BottomSheet
