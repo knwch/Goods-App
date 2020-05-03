@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 import {
   StyleSheet,
   ScrollView,
@@ -13,6 +14,7 @@ import {signupUser} from '../redux/actions/authActions';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import validate from '../validation/validation';
 
 class Signup extends Component {
   constructor(props) {
@@ -23,6 +25,7 @@ class Signup extends Component {
       passwordConfirm: '',
       fname: '',
       lname: '',
+      validation: {},
     };
   }
 
@@ -30,33 +33,86 @@ class Signup extends Component {
     if (this.props.auth.isAuthenticated === true) {
       this.props.navigation.navigate('Home');
     }
-    this.setState({
-      ...this.state,
-      loading: this.props.auth.loading,
-    });
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.auth.loading !== prevProps.auth.loading) {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         loading: this.props.auth.loading,
       });
     }
   }
 
-  onChangeText = name => text => this.setState({[name]: text});
+  onChangeText = name => text => {
+    const {validation} = this.state;
+    this.setState({[name]: text});
+    if (!_.isEmpty(validation)) {
+      if (name === 'email') {
+        validation[name] = validate('email', text);
+      } else if (name === 'password') {
+        validation[name] = validate('password', text);
+      } else if (name === 'passwordConfirm') {
+        validation[name] = validate('confirmPassword', {
+          password: this.state.password,
+          confirmPassword: text,
+        });
+      } else if (name === 'fname' || name === 'lname') {
+        validation[name] = validate('input', text);
+      }
+    }
+  };
 
   labelInput = text => {
-    return <Text style={styles.textColor}>{text}</Text>;
+    return <Text style={styles.label}>{text}</Text>;
+  };
+
+  renderInputStatus = name => {
+    const {validation} = this.state;
+    return validation[name] == null ? 'basic' : 'danger';
   };
 
   onSubmit = async () => {
-    const _user_data = this.state;
-    await this.props.signupUser(_user_data);
+    const {email, password, passwordConfirm, fname, lname} = this.state;
+    var validation = {};
+    validation.email = validate('email', email);
+    validation.password = validate('password', password);
+    validation.passwordConfirm = validate('confirmPassword', {
+      password: password,
+      confirmPassword: passwordConfirm,
+    });
+    validation.fname = validate('input', fname);
+    validation.lname = validate('input', lname);
+
+    if (
+      !validation.email &&
+      !validation.password &&
+      !validation.passwordConfirm &&
+      !validation.fname &&
+      !validation.lname
+    ) {
+      const user_data = {
+        email: email,
+        password: password,
+        passwordConfirm: passwordConfirm,
+        fname: fname,
+        lname: lname,
+      };
+      await this.props.signupUser(user_data);
+    } else {
+      this.setState({validation: validation});
+    }
   };
 
   render() {
-    const {email, password, passwordConfirm, fname, lname} = this.state;
+    const {
+      email,
+      password,
+      passwordConfirm,
+      fname,
+      lname,
+      validation,
+    } = this.state;
 
     return (
       <KeyboardAvoidingView
@@ -75,40 +131,60 @@ class Signup extends Component {
               />
               <Input
                 style={styles.inputForm}
+                textStyle={styles.placeholder}
                 value={email}
                 name="email"
+                keyboardType="email-address"
                 autoCapitalize="none"
+                status={this.renderInputStatus('email')}
+                caption={validation.email}
                 label={this.labelInput('อีเมล')}
                 onChangeText={this.onChangeText('email')}
               />
               <Input
                 style={styles.inputForm}
+                textStyle={styles.placeholder}
                 value={password}
                 name="password"
+                autoCapitalize="none"
+                maxLength={30}
                 secureTextEntry={true}
+                status={this.renderInputStatus('password')}
+                caption={validation.password}
                 label={this.labelInput('รหัสผ่าน')}
                 onChangeText={this.onChangeText('password')}
               />
               <Input
                 style={styles.inputForm}
+                textStyle={styles.placeholder}
                 value={passwordConfirm}
                 name="passwordConfirm"
+                autoCapitalize="none"
+                maxLength={30}
                 secureTextEntry={true}
+                status={this.renderInputStatus('passwordConfirm')}
+                caption={validation.passwordConfirm}
                 label={this.labelInput('ยืนยันรหัสผ่าน')}
                 onChangeText={this.onChangeText('passwordConfirm')}
               />
               <Layout style={styles.row} level="3">
                 <Input
                   style={styles.halfInput}
+                  textStyle={styles.placeholder}
                   value={fname}
                   name="fname"
+                  status={this.renderInputStatus('fname')}
+                  caption={validation.fname}
                   label={this.labelInput('ชื่อจริง')}
                   onChangeText={this.onChangeText('fname')}
                 />
                 <Input
                   style={styles.halfInput}
+                  textStyle={styles.placeholder}
                   value={lname}
                   name="lname"
+                  status={this.renderInputStatus('lname')}
+                  caption={validation.lname}
                   label={this.labelInput('นามสกุล')}
                   onChangeText={this.onChangeText('lname')}
                 />
@@ -117,8 +193,9 @@ class Signup extends Component {
                 style={styles.button}
                 size="medium"
                 status="primary"
-                onPress={this.onSubmit}>
-                ลงทะเบียน
+                onPress={this.onSubmit}
+                activeOpacity={0.8}>
+                <Text style={styles.buttonText}>ลงทะเบียน</Text>
               </Button>
             </Layout>
           </ScrollView>
@@ -158,8 +235,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#2c3d70',
     borderColor: '#2c3d70',
   },
-  textColor: {
+  buttonText: {
+    color: '#FFF',
+    fontFamily: 'Kanit-Regular',
+  },
+  label: {
+    fontFamily: 'Sarabun-Medium',
     color: '#2c3d70',
+  },
+  placeholder: {
+    fontFamily: 'Sarabun-Regular',
   },
   spinnerTextStyle: {
     color: '#FFF',
