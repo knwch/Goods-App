@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -13,6 +14,7 @@ import {signinUser} from '../redux/actions/authActions';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import validate from '../validation/validation';
 
 class Signin extends Component {
   constructor(props) {
@@ -21,19 +23,14 @@ class Signin extends Component {
       email: '',
       password: '',
       secureTextEntry: true,
+      validation: {},
     };
   }
 
   componentDidMount() {
-    const state = this.state;
-    console.log('Signin');
     if (this.props.auth.isAuthecticated === true) {
       this.props.navigation.navigate('Home');
     }
-    this.setState({
-      ...state,
-      loading: this.props.auth.loading,
-    });
   }
 
   componentDidUpdate(prevProps) {
@@ -44,7 +41,18 @@ class Signin extends Component {
     }
   }
 
-  onChangeText = name => text => this.setState({[name]: text});
+  onChangeText = name => text => {
+    const {validation} = this.state;
+    this.setState({[name]: text});
+
+    if (!_.isEmpty(validation)) {
+      if (name === 'email') {
+        validation[name] = validate('email', text);
+      } else if (name === 'password') {
+        validation[name] = validate('password', text);
+      }
+    }
+  };
 
   toggleSecureEntry = () => {
     const {secureTextEntry} = this.state;
@@ -65,21 +73,37 @@ class Signin extends Component {
 
   labelInput = text => {
     return (
-      <Text style={styles.textColor} category="label">
+      <Text style={styles.label} category="label">
         {text}
       </Text>
     );
   };
 
+  renderInputStatus = name => {
+    const {validation} = this.state;
+    return validation[name] == null ? 'basic' : 'danger';
+  };
+
   onSubmit = async () => {
-    const _user_data = this.state;
-    delete _user_data.secureTextEntry;
-    await this.props.signinUser(_user_data);
+    const {email, password} = this.state;
+    var validation = {};
+    validation.email = validate('email', email);
+    validation.password = validate('password', password);
+
+    if (!validation.email && !validation.password) {
+      const user_data = {
+        email: email,
+        password: password,
+      };
+      await this.props.signinUser(user_data);
+    } else {
+      this.setState({validation: validation});
+    }
   };
 
   render() {
     const {navigate} = this.props.navigation;
-    const {email, password, secureTextEntry} = this.state;
+    const {email, password, secureTextEntry, validation} = this.state;
     return (
       <KeyboardAvoidingView
         style={styles.container}
@@ -96,18 +120,27 @@ class Signin extends Component {
             />
             <Input
               style={styles.inputForm}
+              textStyle={styles.placeholder}
               value={email}
               name="email"
+              keyboardType="default"
               autoCapitalize="none"
+              status={this.renderInputStatus('email')}
+              caption={validation.email}
               label={this.labelInput('อีเมล')}
               onChangeText={this.onChangeText('email')}
             />
             <Input
               style={styles.inputForm}
+              textStyle={styles.placeholder}
               value={password}
               name="password"
+              keyboardType="default"
+              autoCapitalize="none"
               accessoryRight={this.renderIcon}
               secureTextEntry={secureTextEntry}
+              status={this.renderInputStatus('password')}
+              caption={validation.password}
               label={this.labelInput('รหัสผ่าน')}
               onChangeText={this.onChangeText('password')}
             />
@@ -158,7 +191,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#2c3d70',
     borderColor: '#2c3d70',
   },
-  textColor: {
+  label: {
+    fontFamily: 'Sarabun-Medium',
     color: '#2c3d70',
   },
   registerTouch: {
@@ -170,6 +204,9 @@ const styles = StyleSheet.create({
     color: '#2c3d70',
     alignSelf: 'flex-end',
     textDecorationLine: 'underline',
+  },
+  placeholder: {
+    fontFamily: 'Sarabun-Regular',
   },
   spinnerTextStyle: {
     color: '#FFF',

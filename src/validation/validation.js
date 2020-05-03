@@ -14,11 +14,12 @@ const validation = {
   password: {
     presence: {
       allowEmpty: false,
-      message: '^Please enter a password',
+      message: '^กรุณากรอกรหัสผ่าน',
     },
     length: {
       minimum: 6,
-      message: '^Your password must be at least 6 characters',
+      maximum: 30,
+      message: '^รหัสผ่านต้องมีความยาวระหว่าง 6 ถึง 30 ตัวอักษร',
     },
   },
 
