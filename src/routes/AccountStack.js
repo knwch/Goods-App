@@ -25,7 +25,7 @@ class AccountStackScreen extends Component {
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
-            fontWeight: 'bold',
+            fontWeight: '500',
           },
           headerTitleAlign: 'center',
         }}>
@@ -34,12 +34,12 @@ class AccountStackScreen extends Component {
             <AccountStack.Screen
               name="Signin"
               component={Signin}
-              options={{title: 'Signin'}}
+              options={{title: 'Sign in'}}
             />
             <AccountStack.Screen
               name="Signup"
               component={Signup}
-              options={{title: 'Signup'}}
+              options={{title: 'Sign up'}}
             />
           </>
         ) : (

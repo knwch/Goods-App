@@ -7,7 +7,7 @@ import {
   Image,
 } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {Button} from '@ui-kitten/components';
+import {Button, Text} from '@ui-kitten/components';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1Ijoia253Y2giLCJhIjoiY2s5Zno2cGg2MGdqazNubzkzaHIzZmppMyJ9.mSjQ3XOe2IKTm1Ub-TwJZw',
@@ -18,7 +18,7 @@ export default class MapPicker extends Component {
     super(props);
 
     this.state = {
-      followUserLocation: true,
+      followUserLocation: false,
       followZoomLevel: 13,
       center: [100.5018, 13.7563],
       location: {
@@ -29,6 +29,7 @@ export default class MapPicker extends Component {
       isDoneFetching: true,
       isDisableButton: true,
       isUserLocationMarked: false,
+      isEnterAgain: false,
     };
 
     this.setLocation = this.setLocation.bind(this);
@@ -44,15 +45,17 @@ export default class MapPicker extends Component {
         isDisableButton: false,
         isUserLocationMarked: true,
         followUserLocation: false,
+        isEnterAgain: true,
       });
+    }
+
+    if (Platform.OS === 'android') {
+      this.requestLocationPermission();
     }
   }
 
   componentDidMount() {
     MapboxGL.setTelemetryEnabled(false);
-    if (Platform.OS === 'android') {
-      this.requestLocationPermission();
-    }
   }
 
   requestLocationPermission = async () => {
@@ -124,7 +127,13 @@ export default class MapPicker extends Component {
           <MapboxGL.MapView
             ref={ref => (this.map = ref)}
             style={styles.map}
-            onPress={this.onPressLocation}>
+            onPress={this.onPressLocation}
+            onDidFinishRenderingMapFully={r => {
+              if (this.state.isEnterAgain === false) {
+                this.setState({followUserLocation: true});
+              }
+            }}>
+            {console.log(this.state)}
             <MapboxGL.UserLocation
               visible={false}
               onUpdate={this.onUserLocation}
@@ -136,6 +145,7 @@ export default class MapPicker extends Component {
               }}
               followUserLocation={followUserLocation}
               followZoomLevel={followZoomLevel}
+              followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
             />
             <MapboxGL.MarkerView
               coordinate={[location.lng, location.lat]}
@@ -152,12 +162,13 @@ export default class MapPicker extends Component {
               size="medium"
               status="primary"
               disabled={this.state.isDisableButton}
+              activeOpacity={0.8}
               onPress={() =>
                 navigate('Forms', {
                   data: [this.state.location, this.state.address],
                 })
               }>
-              ยืนยัน
+              <Text style={styles.buttonText}>ปักหมุดสถานที่</Text>
             </Button>
           </View>
         </View>
@@ -186,6 +197,10 @@ const styles = StyleSheet.create({
     marginRight: 42,
     marginBottom: 12,
     bottom: 0,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontFamily: 'Kanit-Regular',
   },
   bottom: {
     position: 'absolute',

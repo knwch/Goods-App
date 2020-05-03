@@ -28,7 +28,7 @@ class GoodStackScreen extends Component {
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
-            fontWeight: 'bold',
+            fontWeight: '500',
           },
           headerTitleAlign: 'center',
         }}>
@@ -37,12 +37,12 @@ class GoodStackScreen extends Component {
             <GoodStack.Screen
               name="Signin"
               component={Signin}
-              options={{title: 'Signin'}}
+              options={{title: 'Sign in'}}
             />
             <GoodStack.Screen
               name="Signup"
               component={Signup}
-              options={{title: 'Signup'}}
+              options={{title: 'Sign up'}}
             />
           </>
         ) : (

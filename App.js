@@ -2,7 +2,7 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {connect, Provider} from 'react-redux';
+import {Provider} from 'react-redux';
 import {ApplicationProvider} from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import GoodStack from './src/routes/GoodStack';
@@ -50,10 +50,10 @@ export default function App() {
           <Tab.Navigator
             screenOptions={({route}) => ({
               tabBarIcon: ({focused, color, size}) => {
-                if (route.name === 'Home') {
+                if (route.name === 'Discover') {
                   return (
                     <Ionicons
-                      name={focused ? 'home' : 'home-outline'}
+                      name={focused ? 'map-legend' : 'map-outline'}
                       size={size}
                       color={color}
                     />
@@ -83,7 +83,7 @@ export default function App() {
               activeTintColor: 'rgb(33,50,99)',
               inactiveTintColor: 'gray',
             }}>
-            <Tab.Screen name="Home" component={HomeStack} />
+            <Tab.Screen name="Discover" component={HomeStack} />
             <Tab.Screen name="My Goods" component={GoodStack} />
             <Tab.Screen name="Account" component={AccountStack} />
           </Tab.Navigator>

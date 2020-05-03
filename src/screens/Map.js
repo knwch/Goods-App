@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {View, ScrollView, StyleSheet} from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {Text} from '@ui-kitten/components';
 import BottomSheet from 'reanimated-bottom-sheet';
@@ -12,14 +18,35 @@ export default class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      followUserLocation: true,
+      followUserLocation: false,
       followZoomLevel: 13,
     };
+  }
+
+  UNSAFE_componentWillMount() {
+    if (Platform.OS === 'android') {
+      this.requestLocationPermission();
+    }
   }
 
   componentDidMount() {
     MapboxGL.setTelemetryEnabled(false);
   }
+
+  requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the location');
+      } else {
+        console.log('Location permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
 
   renderHeader = () => (
     <View style={styles.header}>
@@ -52,7 +79,11 @@ export default class Map extends Component {
     return (
       <View style={styles.page}>
         <View style={styles.container}>
-          <MapboxGL.MapView style={styles.map}>
+          <MapboxGL.MapView
+            style={styles.map}
+            onDidFinishRenderingMapFully={r => {
+              this.setState({followUserLocation: true});
+            }}>
             <MapboxGL.UserLocation />
             <MapboxGL.Camera
               defaultSettings={{
@@ -61,13 +92,14 @@ export default class Map extends Component {
               }}
               followUserLocation={followUserLocation}
               followZoomLevel={followZoomLevel}
+              followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
             />
           </MapboxGL.MapView>
           <BottomSheet
-            snapPoints={[400, 300, 0]}
+            snapPoints={[300, 200, 0]}
             renderHeader={this.renderHeader}
             renderContent={this.renderContent}
-            initialSnap={2}
+            initialSnap={0}
           />
         </View>
       </View>
