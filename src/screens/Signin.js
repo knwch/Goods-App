@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#FFF',
-    fontFamily: 'Kanit-Medium',
+    fontFamily: 'Kanit-Regular',
   },
   label: {
     fontFamily: 'Sarabun-Medium',
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   registerLabel: {
     color: '#2c3d70',
     alignSelf: 'flex-end',
-    fontFamily: 'Kanit-Medium',
+    fontFamily: 'Kanit-Regular',
     textDecorationLine: 'underline',
   },
   placeholder: {
