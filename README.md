@@ -1,2 +1,2 @@
 # Goods-App
-Application Mobile : React Native + Node.js + MongoDB
+Application Mobile : React Native 
