@@ -269,8 +269,9 @@ export default class Forms extends Component {
                 style={styles.button}
                 size="medium"
                 status="primary"
+                activeOpacity={0.8}
                 onPress={this.onSubmit}>
-                ยืนยัน
+                <Text style={styles.buttonText}>ยืนยัน</Text>
               </Button>
             </Layout>
           </ScrollView>
@@ -309,6 +310,10 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     backgroundColor: '#2c3d70',
     borderColor: '#2c3d70',
+  },
+  buttonText: {
+    color: '#FFF',
+    fontFamily: 'Kanit-Regular',
   },
   label: {
     fontFamily: 'Sarabun-Medium',

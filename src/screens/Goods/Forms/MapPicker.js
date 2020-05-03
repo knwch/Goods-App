@@ -7,7 +7,7 @@ import {
   Image,
 } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {Button} from '@ui-kitten/components';
+import {Button, Text} from '@ui-kitten/components';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1Ijoia253Y2giLCJhIjoiY2s5Zno2cGg2MGdqazNubzkzaHIzZmppMyJ9.mSjQ3XOe2IKTm1Ub-TwJZw',
@@ -152,12 +152,13 @@ export default class MapPicker extends Component {
               size="medium"
               status="primary"
               disabled={this.state.isDisableButton}
+              activeOpacity={0.8}
               onPress={() =>
                 navigate('Forms', {
                   data: [this.state.location, this.state.address],
                 })
               }>
-              ยืนยัน
+              <Text style={styles.buttonText}>ยืนยัน</Text>
             </Button>
           </View>
         </View>
@@ -186,6 +187,10 @@ const styles = StyleSheet.create({
     marginRight: 42,
     marginBottom: 12,
     bottom: 0,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontFamily: 'Kanit-Regular',
   },
   bottom: {
     position: 'absolute',

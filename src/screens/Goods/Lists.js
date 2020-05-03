@@ -1,7 +1,14 @@
 import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Layout, Button, Divider, List, ListItem} from '@ui-kitten/components';
+import {
+  Layout,
+  Button,
+  Divider,
+  List,
+  ListItem,
+  Text,
+} from '@ui-kitten/components';
 
 const data = new Array(8).fill({
   title: 'Item',
@@ -43,8 +50,9 @@ export default class Lists extends Component {
             style={styles.button}
             status="primary"
             accessoryLeft={PlusIcon}
+            activeOpacity={0.8}
             onPress={() => navigate('Forms')}>
-            Add new goods
+            <Text style={styles.buttonText}>เพิ่มสินค้าใหม่</Text>
           </Button>
         </Layout>
       </Layout>
@@ -64,8 +72,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   button: {
-    borderColor: '#005eb8',
-    backgroundColor: '#005eb8',
+    borderColor: '#2c3d70',
+    backgroundColor: '#2c3d70',
     margin: 8,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontFamily: 'Kanit-Regular',
   },
 });
