@@ -31,7 +31,7 @@ class Signup extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated === true) {
-      this.props.navigation.navigate('Home');
+      this.props.navigation.navigate('Map');
     }
   }
 

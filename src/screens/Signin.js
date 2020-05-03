@@ -30,7 +30,7 @@ class Signin extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthecticated === true) {
-      this.props.navigation.navigate('Home');
+      this.props.navigation.navigate('Map');
     }
   }
 
