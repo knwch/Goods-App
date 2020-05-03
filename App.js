@@ -1,114 +1,94 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import * as React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Provider} from 'react-redux';
+import {ApplicationProvider} from '@ui-kitten/components';
+import * as eva from '@eva-design/eva';
+import GoodStack from './src/routes/GoodStack';
+import HomeStack from './src/routes/HomeStack';
+import AccountStack from './src/routes/AccountStack';
+import store from './src/redux/store';
+import * as Keychain from 'react-native-keychain';
+import setAuthToken from './src/utils/setAuthToken';
+import jwt_decode from 'jwt-decode';
+import {setCurrentUser, signoutUser} from './src/redux/actions/authActions';
+let axiosDefaults = require('axios/lib/defaults');
+axiosDefaults.baseURL = 'https://goods-service.herokuapp.com/';
+Ionicons.loadFont();
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+const Tab = createBottomTabNavigator();
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+const getToken = async () => {
+  try {
+    const token = await Keychain.getGenericPassword();
+    if (token) {
+      const {password} = token;
+      setAuthToken(password);
+      const decoded = jwt_decode(password);
+      store.dispatch(setCurrentUser(decoded));
+      if (decoded.exp < Date.now() / 1000) {
+        console.log('token exp');
+        store.dispatch(signoutUser());
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+export default function App() {
+  React.useEffect(() => {
+    console.log('componentwillmount');
+    getToken();
+  }, []);
 
-export default App;
+  return (
+    <ApplicationProvider {...eva} theme={eva.light}>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Tab.Navigator
+            screenOptions={({route}) => ({
+              tabBarIcon: ({focused, color, size}) => {
+                if (route.name === 'Discover') {
+                  return (
+                    <Ionicons
+                      name={focused ? 'map-legend' : 'map-outline'}
+                      size={size}
+                      color={color}
+                    />
+                  );
+                } else if (route.name === 'My Goods') {
+                  return (
+                    <Ionicons
+                      name={focused ? 'cube' : 'cube-outline'}
+                      size={size}
+                      color={color}
+                    />
+                  );
+                } else if (route.name === 'Account') {
+                  return (
+                    <Ionicons
+                      name={
+                        focused ? 'account-circle' : 'account-circle-outline'
+                      }
+                      size={size}
+                      color={color}
+                    />
+                  );
+                }
+              },
+            })}
+            tabBarOptions={{
+              activeTintColor: 'rgb(33,50,99)',
+              inactiveTintColor: 'gray',
+            }}>
+            <Tab.Screen name="Discover" component={HomeStack} />
+            <Tab.Screen name="My Goods" component={GoodStack} />
+            <Tab.Screen name="Account" component={AccountStack} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </ApplicationProvider>
+  );
+}
