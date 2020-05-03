@@ -157,16 +157,15 @@ class Signin extends Component {
               onPress={() => navigate('Signup')}>
               <Text style={styles.registerLabel}>ลงทะเบียนที่นี่</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Button
-                onPress={this.onSubmit}
-                style={styles.button}
-                size="medium"
-                status="primary"
-                activeOpacity={0.8}>
-                <Text style={styles.buttonText}>เข้าสู่ระบบ</Text>
-              </Button>
-            </TouchableOpacity>
+
+            <Button
+              onPress={this.onSubmit}
+              style={styles.button}
+              size="medium"
+              status="primary"
+              activeOpacity={0.8}>
+              <Text style={styles.buttonText}>เข้าสู่ระบบ</Text>
+            </Button>
           </Layout>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
