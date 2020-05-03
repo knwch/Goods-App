@@ -158,7 +158,7 @@ export default class MapPicker extends Component {
                   data: [this.state.location, this.state.address],
                 })
               }>
-              <Text style={styles.buttonText}>ยืนยัน</Text>
+              <Text style={styles.buttonText}>ปักหมุดสถานที่</Text>
             </Button>
           </View>
         </View>
