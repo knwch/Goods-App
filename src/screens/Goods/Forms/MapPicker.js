@@ -18,7 +18,7 @@ export default class MapPicker extends Component {
     super(props);
 
     this.state = {
-      followUserLocation: true,
+      followUserLocation: false,
       followZoomLevel: 13,
       center: [100.5018, 13.7563],
       location: {
@@ -29,6 +29,7 @@ export default class MapPicker extends Component {
       isDoneFetching: true,
       isDisableButton: true,
       isUserLocationMarked: false,
+      isEnterAgain: false,
     };
 
     this.setLocation = this.setLocation.bind(this);
@@ -44,15 +45,17 @@ export default class MapPicker extends Component {
         isDisableButton: false,
         isUserLocationMarked: true,
         followUserLocation: false,
+        isEnterAgain: true,
       });
+    }
+
+    if (Platform.OS === 'android') {
+      this.requestLocationPermission();
     }
   }
 
   componentDidMount() {
     MapboxGL.setTelemetryEnabled(false);
-    if (Platform.OS === 'android') {
-      this.requestLocationPermission();
-    }
   }
 
   requestLocationPermission = async () => {
@@ -124,7 +127,13 @@ export default class MapPicker extends Component {
           <MapboxGL.MapView
             ref={ref => (this.map = ref)}
             style={styles.map}
-            onPress={this.onPressLocation}>
+            onPress={this.onPressLocation}
+            onDidFinishRenderingMapFully={r => {
+              if (this.state.isEnterAgain === false) {
+                this.setState({followUserLocation: true});
+              }
+            }}>
+            {console.log(this.state)}
             <MapboxGL.UserLocation
               visible={false}
               onUpdate={this.onUserLocation}
@@ -136,6 +145,7 @@ export default class MapPicker extends Component {
               }}
               followUserLocation={followUserLocation}
               followZoomLevel={followZoomLevel}
+              followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
             />
             <MapboxGL.MarkerView
               coordinate={[location.lng, location.lat]}
