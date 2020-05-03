@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {View, ScrollView, StyleSheet} from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {Text} from '@ui-kitten/components';
 import BottomSheet from 'reanimated-bottom-sheet';
@@ -19,7 +25,25 @@ export default class Map extends Component {
 
   componentDidMount() {
     MapboxGL.setTelemetryEnabled(false);
+    if (Platform.OS === 'android') {
+      this.requestLocationPermission();
+    }
   }
+
+  requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the location');
+      } else {
+        console.log('Location permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
 
   renderHeader = () => (
     <View style={styles.header}>
