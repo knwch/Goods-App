@@ -96,10 +96,10 @@ export default class Map extends Component {
             />
           </MapboxGL.MapView>
           <BottomSheet
-            snapPoints={[400, 300, 0]}
+            snapPoints={[300, 200, 0]}
             renderHeader={this.renderHeader}
             renderContent={this.renderContent}
-            initialSnap={2}
+            initialSnap={0}
           />
         </View>
       </View>
