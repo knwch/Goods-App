@@ -35,6 +35,7 @@ class Signin extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.auth.loading !== prevProps.auth.loading) {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         loading: this.props.auth.loading,
       });
@@ -137,6 +138,7 @@ class Signin extends Component {
               name="password"
               keyboardType="default"
               autoCapitalize="none"
+              maxLength={30}
               accessoryRight={this.renderIcon}
               secureTextEntry={secureTextEntry}
               status={this.renderInputStatus('password')}
