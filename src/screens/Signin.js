@@ -42,7 +42,6 @@ class Signin extends Component {
       this.props.errors !== prevProps.errors &&
       !_.isEmpty(this.props.errors)
     ) {
-      console.log();
       console.log('Update error signin');
       this.setState({
         isErrors: !this.state.isErrors,
