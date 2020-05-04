@@ -16,6 +16,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import validate from '../validation/validation';
+import Modalerrors from './Goods/Modal/Errorsmodal';
 
 class Signin extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class Signin extends Component {
       password: '',
       secureTextEntry: true,
       validation: {},
+      isErrors: false,
     };
   }
 
@@ -32,13 +34,14 @@ class Signin extends Component {
     if (this.props.auth.isAutheticated === true) {
       this.props.navigation.navigate('Map');
     }
+    console.log('Sign in');
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.auth.loading !== prevProps.auth.loading) {
-      // eslint-disable-next-line react/no-did-update-set-state
+    if (this.props.errors !== prevProps.errors) {
+      console.log('Update error signin');
       this.setState({
-        loading: this.props.auth.loading,
+        isErrors: !this.state.isErrors,
       });
     }
   }
@@ -106,9 +109,20 @@ class Signin extends Component {
     }
   };
 
+  onModalError = () => {
+    this.setState({isErrors: !this.state.isErrors});
+  };
+
   render() {
     const {navigate} = this.props.navigation;
-    const {email, password, secureTextEntry, validation} = this.state;
+    const {
+      email,
+      password,
+      secureTextEntry,
+      validation,
+      isErrors,
+      loading,
+    } = this.state;
     return (
       <KeyboardAvoidingView
         style={styles.container}
@@ -119,9 +133,15 @@ class Signin extends Component {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <Layout style={styles.layout} level="3">
             <Spinner
-              visible={this.state.loading}
+              visible={this.props.auth.loading}
               textContent={'Loading...'}
               textStyle={styles.spinnerTextStyle}
+            />
+
+            <Modalerrors
+              isErrors={isErrors}
+              closeErrorsModal={this.onModalError}
+              message={this.props.errors}
             />
             <Image
               style={styles.image}
@@ -240,6 +260,7 @@ const mapDispatchToProps = dispatch => {
 const mapStatetoProps = state => {
   return {
     auth: state.auth,
+    errors: state.errors,
   };
 };
 
