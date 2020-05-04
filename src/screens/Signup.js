@@ -15,6 +15,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import validate from '../validation/validation';
+import Modalerrors from './Goods/Modal/Errorsmodal';
 
 class Signup extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class Signup extends Component {
       lname: '',
       validation: {},
       isRegistered: false,
+      isErrors: false,
     };
   }
 
@@ -34,13 +36,19 @@ class Signup extends Component {
     if (this.props.auth.isAuthenticated === true) {
       this.props.navigation.navigate('Map');
     }
+    console.log('Sign up');
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.auth.loading !== prevProps.auth.loading) {
-      // eslint-disable-next-line react/no-did-update-set-state
+    if (this.props.errors !== prevProps.errors) {
+      console.log('Update error');
       this.setState({
-        loading: this.props.auth.loading,
+        isErrors: !this.state.isErrors,
+      });
+    } else if (this.props.auth.success !== prevProps.auth.success) {
+      console.log('success');
+      this.setState({
+        isRegistered: !this.state.isRegistered,
       });
     }
   }
@@ -84,6 +92,10 @@ class Signup extends Component {
     goBack();
   };
 
+  onModalErrors = () => {
+    this.setState({isErrors: !this.state.isErrors});
+  };
+
   onSubmit = async () => {
     const {email, password, passwordConfirm, fname, lname} = this.state;
 
@@ -113,7 +125,6 @@ class Signup extends Component {
         lname: lname,
       };
       await this.props.signupUser(user_data);
-      this.successRegisterModal();
     } else {
       // if not valid then set validators to states
       this.setState({validation: validation});
@@ -129,8 +140,8 @@ class Signup extends Component {
       lname,
       validation,
       isRegistered,
+      isErrors,
     } = this.state;
-
     return (
       <KeyboardAvoidingView
         style={styles.container}
@@ -142,7 +153,7 @@ class Signup extends Component {
           <ScrollView>
             <Layout style={styles.layout} level="3">
               <Spinner
-                visible={this.state.loading}
+                visible={this.props.auth.loading}
                 textContent={'Loading...'}
                 textStyle={styles.spinnerTextStyle}
               />
@@ -158,6 +169,12 @@ class Signup extends Component {
                   </Button>
                 </Card>
               </Modal>
+
+              <Modalerrors
+                isErrors={isErrors}
+                closeErrorsModal={this.onModalErrors}
+                message={this.props.errors}
+              />
 
               <Text style={styles.header}>สมัครสมาชิก</Text>
               <Input
@@ -303,6 +320,7 @@ const mapDispatchToProps = dispatch => {
 const mapStatetoProps = state => {
   return {
     auth: state.auth,
+    errors: state.errors,
   };
 };
 
