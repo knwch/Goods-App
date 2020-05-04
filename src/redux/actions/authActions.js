@@ -7,36 +7,36 @@ import {
   UN_LOADING,
   GET_ERRORS,
   CLEAR_ERRORS,
+  SET_SUCCESS,
 } from './types';
 import setAuthToken from '../../utils/setAuthToken';
 // signup
 export const signupUser = userData => async dispatch => {
-  dispatch(setUserLoading());
   try {
+    dispatch(setUserLoading());
     const user = await axios.post(`/api/auth/signup`, userData);
     console.log(user.data);
-    dispatch(setUnloading());
+    dispatch(setSuccess());
   } catch (err) {
-    console.log(err.response.data);
     const error = err.response.data;
+    dispatch(setUnloading());
     dispatch(setError(error));
   }
 };
 
 // signin
 export const signinUser = userData => async dispatch => {
-  dispatch(setUserLoading());
-  dispatch(clearError());
   try {
+    dispatch(setUserLoading());
     const res = await axios.post(`/api/auth/signin`, userData);
     const {token} = res.data;
-    // console.log(token);
     await Keychain.setGenericPassword('jwtToken', token);
     setAuthToken(token);
     const decoded = jwt_decode(token);
     dispatch(setCurrentUser(decoded));
   } catch (err) {
     const error = err.response.data;
+    dispatch(setUnloading());
     dispatch(setError(error));
   }
 };
@@ -70,6 +70,12 @@ export const setCurrentUser = decode => {
   };
 };
 
+// set success signup
+export const setSuccess = () => {
+  return {
+    type: SET_SUCCESS,
+  };
+};
 // set error
 export const setError = error => {
   return {

@@ -23,6 +23,7 @@ const getToken = async () => {
   try {
     const token = await Keychain.getGenericPassword();
     if (token) {
+      console.log('token success');
       const {password} = token;
       setAuthToken(password);
       const decoded = jwt_decode(password);

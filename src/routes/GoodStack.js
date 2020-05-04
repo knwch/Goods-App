@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import Signup from '../screens/Signup';
-import Signin from '../screens/Signin';
 import Lists from '../screens/Goods/Lists';
 import Forms from '../screens/Goods/Forms/Forms';
 import MapPicker from '../screens/Goods/Forms/MapPicker';
 import {connect} from 'react-redux';
+import {Button, Text} from '@ui-kitten/components';
 
 const GoodStack = createStackNavigator();
 
@@ -17,6 +16,19 @@ class GoodStackScreen extends Component {
       userToken: null,
     };
   }
+
+  buttonScreen = () => {
+    return (
+      <>
+        <Button
+          onPress={() => this.props.navigation.navigate('Account')}
+          size="medium"
+          status="primary">
+          เข้าสู่ระบบ
+        </Button>
+      </>
+    );
+  };
 
   render() {
     return (
@@ -36,13 +48,8 @@ class GoodStackScreen extends Component {
           <>
             <GoodStack.Screen
               name="Signin"
-              component={Signin}
-              options={{title: 'Sign in'}}
-            />
-            <GoodStack.Screen
-              name="Signup"
-              component={Signup}
-              options={{title: 'Sign up'}}
+              component={this.buttonScreen}
+              options={{title: 'Tesst'}}
             />
           </>
         ) : (
