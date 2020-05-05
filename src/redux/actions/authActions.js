@@ -17,6 +17,7 @@ export const signupUser = userData => async dispatch => {
     const user = await axios.post(`/api/auth/signup`, userData);
     console.log(user.data);
     dispatch(setSuccess());
+    dispatch(clearError());
   } catch (err) {
     const error = err.response.data;
     dispatch(setUnloading());
@@ -27,6 +28,7 @@ export const signupUser = userData => async dispatch => {
 // signin
 export const signinUser = userData => async dispatch => {
   try {
+    dispatch(clearError());
     dispatch(setUserLoading());
     const res = await axios.post(`/api/auth/signin`, userData);
     const {token} = res.data;
@@ -34,6 +36,7 @@ export const signinUser = userData => async dispatch => {
     setAuthToken(token);
     const decoded = jwt_decode(token);
     dispatch(setCurrentUser(decoded));
+    dispatch(clearError());
   } catch (err) {
     const error = err.response.data;
     dispatch(setUnloading());
