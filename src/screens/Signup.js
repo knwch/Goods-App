@@ -39,22 +39,14 @@ class Signup extends Component {
     console.log('Sign up');
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (
-  //     this.props.errors !== prevProps.errors &&
-  //     !_.isEmpty(this.props.errors)
-  //   ) {
-  //     console.log('Update error');
-  //     this.setState({
-  //       isErrors: !this.state.isErrors,
-  //     });
-  //   } else if (this.props.auth.success !== prevProps.auth.success) {
-  //     console.log('success');
-  //     this.setState({
-  //       isRegistered: !this.state.isRegistered,
-  //     });
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    if (this.props.auth.success !== prevProps.auth.success) {
+      console.log('success');
+      this.setState({
+        isRegistered: !this.state.isRegistered,
+      });
+    }
+  }
 
   onChangeText = name => text => {
     const {validation} = this.state;

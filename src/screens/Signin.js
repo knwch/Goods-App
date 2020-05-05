@@ -118,14 +118,7 @@ class Signin extends Component {
 
   render() {
     const {navigate} = this.props.navigation;
-    const {
-      email,
-      password,
-      secureTextEntry,
-      validation,
-      isErrors,
-      loading,
-    } = this.state;
+    const {email, password, secureTextEntry, validation, isErrors} = this.state;
     return (
       <KeyboardAvoidingView
         style={styles.container}

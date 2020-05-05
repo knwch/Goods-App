@@ -19,12 +19,16 @@ import {
   Text,
 } from '@ui-kitten/components';
 import validate from '../../../validation/validation';
+import {addPost} from '../../../redux/actions/postActions';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const ChevronIcon = () => (
   <Ionicons name={'chevron-down'} size={20} color="#2c3d70" />
 );
 
-export default class Forms extends Component {
+class Forms extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,10 +47,14 @@ export default class Forms extends Component {
       },
       address: '',
       validation: {},
+      isErrors: false,
     };
   }
+  componentDidMount() {
+    console.log('create post');
+  }
 
-  UNSAFE_componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(nextProps, prevProps) {
     const {validation} = this.state;
     if (nextProps.route.params != null) {
       // get data from MapPicker
@@ -98,8 +106,18 @@ export default class Forms extends Component {
     }
   };
 
-  onSubmit = () => {
-    const {topic, type, goods, price, phone, location, address} = this.state;
+  onSubmit = async () => {
+    const {
+      topic,
+      type,
+      goods,
+      price,
+      phone,
+      location,
+      address,
+      describe,
+      contact,
+    } = this.state;
     var validation = {};
     validation.topic = validate('input', topic);
     validation.type = validate('selector', type);
@@ -111,7 +129,33 @@ export default class Forms extends Component {
       location.lng && location.lat && address,
     );
 
-    this.setState({validation: validation});
+    if (
+      !validation.topic &&
+      !validation.type &&
+      !validation.goods &&
+      !validation.price &&
+      !validation.phone &&
+      !validation.address
+    ) {
+      const _final_data = {
+        topic,
+        type,
+        goods,
+        price,
+        phone,
+        location: {
+          longitude: location.lng.toString(),
+          latitude: location.lat.toString(),
+          address,
+        },
+        describe,
+        contact,
+      };
+      await this.props.addPost(_final_data);
+      this.props.navigation.navigate('Lists');
+    } else {
+      this.setState({validation: validation});
+    }
   };
 
   labelInput = text => {
@@ -154,6 +198,12 @@ export default class Forms extends Component {
           <ScrollView>
             <Layout style={styles.layout} level="3">
               <Text style={styles.header}>เพิ่มสินค้าใหม่ของคุณ</Text>
+              <Spinner
+                visible={this.props.post.loading}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+              />
+
               <Input
                 style={styles.inputform}
                 textStyle={styles.placeholder}
@@ -332,4 +382,24 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular',
     fontSize: 24,
   },
+  spinnerTextStyle: {
+    color: '#FFF',
+  },
 });
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({addPost}, dispatch);
+};
+
+const mapStatetoProps = state => {
+  return {
+    auth: state.auth,
+    errors: state.errors,
+    post: state.post,
+  };
+};
+
+export default connect(
+  mapStatetoProps,
+  mapDispatchToProps,
+)(Forms);
