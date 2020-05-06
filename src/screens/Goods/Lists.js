@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 import {StyleSheet} from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -15,6 +16,7 @@ import {statusPost, getPostUser} from '../../redux/actions/postActions';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import Modalerrors from '../Goods/Modal/Errorsmodal';
 
 const PlusIcon = () => (
   <Ionicons name={'plus-circle'} size={14} color="white" />
@@ -28,6 +30,7 @@ class Lists extends Component {
       isModal: false,
       message: '',
       statusPost: false,
+      isErrors: false,
     };
   }
 
@@ -40,28 +43,32 @@ class Lists extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.post.postUser.length !== prevProps.post.postUser.length) {
       this.setState({
         posts: this.props.post.postUser,
       });
     } else if (this.props.post.success !== prevProps.post.success) {
+      const {statusPost, index} = this.state;
       console.log('Update status post');
-      const {statusPost, posts, index} = this.state;
-      posts[index] = {
-        ...posts[index],
-        postStatus: statusPost,
-      };
-      this.setState({isModal: !this.state.isModal}, function() {
-        console.log(this.state.posts[index]);
-      });
+      this.setState(prevState => ({
+        posts: prevState.posts.map(post =>
+          post.id === index ? {...post, postStatus: statusPost} : post,
+        ),
+      }));
+    } else if (
+      this.props.errors !== prevProps.errors &&
+      !_.isEmpty(this.props.errors)
+    ) {
+      this.setState({isErrors: !this.state.isErrors});
     }
   }
 
   onSubmit = async () => {
-    const {statusPost, posts, index} = this.state;
+    const {statusPost, index, isModal} = this.state;
     const _data = {statusPost: statusPost};
-    await this.props.statusPost(posts[index].id, _data);
+    this.setState({isModal: !isModal});
+    await this.props.statusPost(index, _data);
   };
 
   onModal = (message, status, index) => {
@@ -71,6 +78,14 @@ class Lists extends Component {
       statusPost: status,
       index: index,
     });
+  };
+
+  closeModalError = () => {
+    this.setState({isErrors: !this.state.isErrors});
+  };
+
+  closeModal = () => {
+    this.setState({isModal: !this.state.isModal});
   };
 
   ListScreen = () => {
@@ -86,7 +101,7 @@ class Lists extends Component {
               appearance="outline"
               status="danger"
               onPress={() =>
-                this.onModal('คุณต้องการปิดโพสใช่หรือไม่', false, index)
+                this.onModal('คุณต้องการปิดโพสใช่หรือไม่', false, `${item.id}`)
               }>
               Disable
             </Button>
@@ -96,7 +111,7 @@ class Lists extends Component {
               appearance="outline"
               status="success"
               onPress={() =>
-                this.onModal('คุณต้องการเปิดโพสใช่หรือไม่', true, index)
+                this.onModal('คุณต้องการเปิดโพสใช่หรือไม่', true, `${item.id}`)
               }>
               Available
             </Button>
@@ -129,6 +144,13 @@ class Lists extends Component {
             </Button>
           </Card>
         </Modal>
+
+        <Modalerrors
+          isErrors={this.state.isErrors}
+          message={this.props.errors}
+          closeErrorsModal={this.closeModalError}
+        />
+
         <List
           data={this.state.posts}
           ItemSeparatorComponent={Divider}
