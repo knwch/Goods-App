@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Lists from '../screens/Goods/Lists';
+import Detail from '../screens/Goods/Detail';
 import Forms from '../screens/Goods/Forms/Forms';
 import MapPicker from '../screens/Goods/Forms/MapPicker';
 import {connect} from 'react-redux';
@@ -66,6 +67,11 @@ class GoodStackScreen extends Component {
             <GoodStack.Screen
               name="Lists"
               component={Lists}
+              options={{title: 'My Goods'}}
+            />
+            <GoodStack.Screen
+              name="Detail"
+              component={Detail}
               options={{title: 'My Goods'}}
             />
             <GoodStack.Screen
