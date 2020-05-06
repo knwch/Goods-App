@@ -12,15 +12,19 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {Text, Drawer, DrawerItem} from '@ui-kitten/components';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import BottomSheet from 'reanimated-bottom-sheet';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {getPostAll} from '../redux/actions/postActions';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1Ijoia253Y2giLCJhIjoiY2s5Zno2cGg2MGdqazNubzkzaHIzZmppMyJ9.mSjQ3XOe2IKTm1Ub-TwJZw',
 );
 
-export default class Map extends Component {
+class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      posts: [],
       followUserLocation: false,
       followZoomLevel: 13,
     };
@@ -32,8 +36,12 @@ export default class Map extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     MapboxGL.setTelemetryEnabled(false);
+    await this.props.getPostAll();
+    this.setState({
+      posts: this.props.post.posts,
+    });
   }
 
   requestLocationPermission = async () => {
@@ -242,3 +250,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({getPostAll}, dispatch);
+};
+
+const mapStatetoProps = state => {
+  return {
+    post: state.post,
+    errors: state.errors,
+  };
+};
+
+export default connect(
+  mapStatetoProps,
+  mapDispatchToProps,
+)(Map);
