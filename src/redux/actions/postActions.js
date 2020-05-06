@@ -27,7 +27,6 @@ export const addPost = postData => async dispatch => {
     const error = err.response.data;
     console.log(error);
     dispatch(setUnloading());
-    // dispatch(setErrors(error));
   }
 };
 
@@ -71,7 +70,6 @@ export const getPostUser = userid => async dispatch => {
   try {
     dispatch(setPostLoading());
     const post = await axios.get(`/api/posts/user/${userid}`);
-    // console.log(post.data.data);
     dispatch({
       type: GET_POST_USER,
       payload: post.data.data,
@@ -87,19 +85,18 @@ export const getPostUser = userid => async dispatch => {
 // status post
 export const statusPost = (postid, statusData) => async dispatch => {
   try {
-    // console.log(postid, statusData);
+    dispatch(clearErrors());
     dispatch(setPostLoading());
     const post = await axios.put(`/api/posts/${postid}`, statusData);
-    console.log(post.data);
     dispatch({type: STATUS_POST});
   } catch (err) {
     const error = err.response.data;
-    console.log(err);
     dispatch(setUnloading());
     dispatch(setErrors(error));
   }
 };
 
+// delete
 export const deletePost = postid => async dispatch => {
   try {
     dispatch(setPostLoading());
@@ -135,7 +132,7 @@ export const clearErrors = () => {
 };
 
 // set Errors
-export const setErrors = () => {
+export const setErrors = error => {
   return {
     type: GET_ERRORS,
     payload: error,
