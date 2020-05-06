@@ -42,6 +42,7 @@ class Signup extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.auth.success !== prevProps.auth.success) {
       console.log('success');
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         isRegistered: !this.state.isRegistered,
       });

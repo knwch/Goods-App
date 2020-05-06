@@ -43,6 +43,7 @@ class Signin extends Component {
       !_.isEmpty(this.props.errors)
     ) {
       console.log('Update error signin');
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         isErrors: !this.state.isErrors,
       });
