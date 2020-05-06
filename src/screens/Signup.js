@@ -42,6 +42,7 @@ class Signup extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.auth.success !== prevProps.auth.success) {
       console.log('success');
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         isRegistered: !this.state.isRegistered,
       });
@@ -252,13 +253,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#edf1f7',
   },
   row: {
     marginTop: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#edf1f7',
   },
   halfInput: {
     flex: 1,
@@ -267,7 +268,7 @@ const styles = StyleSheet.create({
   layout: {
     paddingLeft: 14,
     paddingRight: 14,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#edf1f7',
   },
   inputForm: {
     marginTop: 12,
