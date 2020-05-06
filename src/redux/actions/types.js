@@ -1,0 +1,14 @@
+export const SET_CURRENT_USER = 'SIGN_IN';
+export const GET_ERRORS = 'GET_ERRORS';
+export const SET_LOADING = 'SET_LOADING';
+export const UN_LOADING = 'UN_LOADING';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
+export const SET_SUCCESS = 'SET_SUCCESS';
+export const POST_LOADING = 'POST_LOADING';
+export const GET_POSTS = 'GET_POSTS';
+export const GET_POST = 'GET_POST';
+export const ADD_POST = 'ADD_POST';
+export const DELETE_POST = 'DELETE_POST';
+export const STATUS_POST = 'STATUS_POST';
+export const GET_POST_USER = 'GET_POST_USER';
+export const UN_POST_LOAD = 'UN_POST_LOAD';
