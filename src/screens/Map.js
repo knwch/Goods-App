@@ -4,10 +4,13 @@ import {
   ScrollView,
   StyleSheet,
   PermissionsAndroid,
+  TouchableOpacity,
   Platform,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {Text} from '@ui-kitten/components';
+import {Text, Drawer, DrawerItem} from '@ui-kitten/components';
+import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import BottomSheet from 'reanimated-bottom-sheet';
 
 MapboxGL.setAccessToken(
@@ -48,6 +51,30 @@ export default class Map extends Component {
     }
   };
 
+  renderDrawer = () => {
+    return (
+      <View>
+        <View style={styles.drawerHeader}>
+          <Text style={styles.menuHeader}>สินค้า</Text>
+          <TouchableOpacity
+            hitSlop={{top: 30, left: 30, bottom: 30, right: 30}}
+            onPress={() => this.drawer.closeDrawer()}>
+            <Ionicons
+              style={styles.backIcon}
+              name="chevron-left"
+              size={38}
+              color="#2c3d70"
+            />
+          </TouchableOpacity>
+        </View>
+        <Drawer>
+          <DrawerItem title="อาหาร" />
+          <DrawerItem title="" />
+        </Drawer>
+      </View>
+    );
+  };
+
   renderHeader = () => (
     <View style={styles.header}>
       <View style={styles.panelHeader}>
@@ -77,31 +104,54 @@ export default class Map extends Component {
     const {followUserLocation, followZoomLevel} = this.state;
 
     return (
-      <View style={styles.page}>
-        <View style={styles.container}>
-          <MapboxGL.MapView
-            style={styles.map}
-            onDidFinishRenderingMapFully={r => {
-              this.setState({followUserLocation: true});
-            }}>
-            <MapboxGL.UserLocation />
-            <MapboxGL.Camera
-              defaultSettings={{
-                centerCoordinate: [100.5018, 13.7563],
-                zoomLevel: 13,
-              }}
-              followUserLocation={followUserLocation}
-              followZoomLevel={followZoomLevel}
-              followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
-            />
-          </MapboxGL.MapView>
-          <BottomSheet
-            snapPoints={[300, 200, 0]}
-            renderHeader={this.renderHeader}
-            renderContent={this.renderContent}
-            initialSnap={0}
-          />
-        </View>
+      <View style={styles.map}>
+        <DrawerLayout
+          ref={drawer => {
+            this.drawer = drawer;
+          }}
+          drawerWidth={200}
+          drawerPosition={DrawerLayout.positions.Left}
+          drawerType="front"
+          drawerBackgroundColor="#fff"
+          renderNavigationView={this.renderDrawer}>
+          <View style={styles.page}>
+            <View style={styles.container}>
+              <MapboxGL.MapView
+                style={styles.map}
+                onDidFinishRenderingMapFully={r => {
+                  this.setState({followUserLocation: true});
+                }}>
+                <MapboxGL.UserLocation />
+                <MapboxGL.Camera
+                  defaultSettings={{
+                    centerCoordinate: [100.5018, 13.7563],
+                    zoomLevel: 13,
+                  }}
+                  followUserLocation={followUserLocation}
+                  followZoomLevel={followZoomLevel}
+                  followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
+                />
+              </MapboxGL.MapView>
+              <View style={styles.menu}>
+                <TouchableOpacity
+                  hitSlop={{top: 30, left: 30, bottom: 30, right: 30}}
+                  onPress={() => this.drawer.openDrawer()}>
+                  <Ionicons
+                    name="xbox-controller-menu"
+                    size={38}
+                    color="#2c3d70"
+                  />
+                </TouchableOpacity>
+              </View>
+              <BottomSheet
+                snapPoints={[300, 200, 0]}
+                renderHeader={this.renderHeader}
+                renderContent={this.renderContent}
+                initialSnap={2}
+              />
+            </View>
+          </View>
+        </DrawerLayout>
       </View>
     );
   }
@@ -171,5 +221,24 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     color: 'white',
+  },
+  menu: {
+    position: 'absolute',
+    left: '5%',
+    top: '4%',
+    zIndex: 10,
+  },
+  menuHeader: {
+    color: '#2c3d70',
+    marginLeft: 12,
+    fontFamily: 'Kanit-Regular',
+    fontSize: 24,
+  },
+  drawerHeader: {
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
