@@ -45,6 +45,7 @@ class Lists extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.post.postUser.length !== prevProps.post.postUser.length) {
+      console.log('Update posts');
       this.setState({
         posts: this.props.post.postUser,
       });
@@ -94,6 +95,7 @@ class Lists extends Component {
       <ListItem
         title={`${item.topic}`}
         description={`${item.describe}`}
+        onPress={() => navigate('Detail', {post: item})}
         accessoryRight={() =>
           item.postStatus ? (
             <Button

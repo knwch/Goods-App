@@ -18,15 +18,12 @@ export const addPost = postData => async dispatch => {
     dispatch(clearErrors());
     dispatch(setPostLoading());
     const post = await axios.post('/api/posts/', postData);
-    console.log(post.data);
     dispatch({
       type: ADD_POST,
       payload: post.data.data,
     });
   } catch (err) {
-    const error = err.response.data;
-    console.log(error);
-    dispatch(setUnloading());
+    console.log(err);
   }
 };
 
