@@ -18,12 +18,14 @@ export const addPost = postData => async dispatch => {
     dispatch(clearErrors());
     dispatch(setPostLoading());
     const post = await axios.post('/api/posts/', postData);
+    // console.log([post.data.data]);
     dispatch({
       type: ADD_POST,
       payload: post.data.data,
     });
   } catch (err) {
     console.log(err);
+    dispatch(setUnloading());
   }
 };
 
@@ -32,9 +34,10 @@ export const getPostAll = () => async dispatch => {
   try {
     dispatch(setPostLoading());
     const post = await axios.get(`/api/posts/`);
+    // console.log(post.data.data);
     dispatch({
       type: GET_POSTS,
-      payload: post.data,
+      payload: post.data.data,
     });
   } catch (err) {
     console.log(err);
