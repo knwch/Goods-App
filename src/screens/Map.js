@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 import {
   View,
   ScrollView,
@@ -24,10 +25,17 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts: [],
+      posts: {},
+      initialSnap: 2,
+      selectedPost: {},
+      filterData: ['ทั้งหมด', 'อาหาร', 'เจลหรือหน้ากากอนามัย', 'อื่นๆ'],
+      filterIndex: '',
+      filter: 'ทั้งหมด',
       followUserLocation: false,
       followZoomLevel: 13,
     };
+
+    this.bottomSheetRef = React.createRef();
   }
 
   UNSAFE_componentWillMount() {
@@ -39,6 +47,7 @@ class Map extends Component {
   async componentDidMount() {
     MapboxGL.setTelemetryEnabled(false);
     await this.props.getPostAll();
+    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({
       posts: this.props.post.posts,
     });
@@ -59,9 +68,23 @@ class Map extends Component {
     }
   };
 
+  FoodIcon = () => <Ionicons name="food-apple" size={18} color="#fc6c4e" />;
+
+  MedicIcon = () => <Ionicons name="medical-bag" size={18} color="#1b8c74" />;
+
+  PackageIcon = () => <Ionicons name="package" size={18} color="#5495e3" />;
+
+  onSelectFilter = () => index => {
+    const {filterData} = this.state;
+    this.setState({
+      filter: filterData[index.row],
+      filterIndex: index,
+    });
+  };
+
   renderDrawer = () => {
     return (
-      <View>
+      <>
         <View style={styles.drawerHeader}>
           <Text style={styles.menuHeader}>สินค้า</Text>
           <TouchableOpacity
@@ -75,11 +98,18 @@ class Map extends Component {
             />
           </TouchableOpacity>
         </View>
-        <Drawer>
-          <DrawerItem title="อาหาร" />
-          <DrawerItem title="" />
+        <Drawer
+          selectedIndex={this.state.filterIndex}
+          onSelect={this.onSelectFilter()}>
+          <DrawerItem title="ทั้งหมด" />
+          <DrawerItem accessoryRight={this.FoodIcon} title="อาหาร" />
+          <DrawerItem
+            accessoryRight={this.MedicIcon}
+            title="เจลหรือหน้ากากอนามัย"
+          />
+          <DrawerItem accessoryRight={this.PackageIcon} title="อื่นๆ" />
         </Drawer>
-      </View>
+      </>
     );
   };
 
@@ -91,25 +121,99 @@ class Map extends Component {
     </View>
   );
 
-  renderContent = () => (
-    <View style={styles.panel}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.panelTitle}>San Francisco Airport</Text>
-        <Text style={styles.panelSubtitle}>
-          International Airport - 40 miles away
-        </Text>
-        <View style={styles.panelButton}>
-          <Text style={styles.panelButtonTitle}>Directions</Text>
+  renderContent = () => {
+    const {selectedPost} = this.state;
+
+    if (!_.isEmpty(selectedPost)) {
+      return (
+        <View style={styles.panel}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Text style={styles.panelTitle}>{selectedPost.topic}</Text>
+            <Text style={styles.panelSubtitle}>
+              International Airport - 40 miles away
+            </Text>
+            <View style={styles.panelButton}>
+              <Text style={styles.panelButtonTitle}>Directions</Text>
+            </View>
+            <View style={styles.panelButton}>
+              <Text style={styles.panelButtonTitle}>Search Nearby</Text>
+            </View>
+          </ScrollView>
         </View>
-        <View style={styles.panelButton}>
-          <Text style={styles.panelButtonTitle}>Search Nearby</Text>
+      );
+    } else {
+      return (
+        <View style={styles.panel}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Text style={styles.panelTitle}>Goods Team :</Text>
+            <Text style={styles.panelSubtitle}>
+              เลือก Marker ในแผนที่เพื่อดูรายละเอียดเพิ่มเติม
+            </Text>
+          </ScrollView>
         </View>
-      </ScrollView>
-    </View>
-  );
+      );
+    }
+  };
+
+  onAnnotationSelected = index => {
+    const {posts} = this.state;
+    this.setState({selectedPost: posts.data[index]});
+    this.bottomSheetRef.current.snapTo(0);
+  };
+
+  onAnnotationDeselected = () => {
+    this.bottomSheetRef.current.snapTo(2);
+  };
+
+  annotationComponent = (posts, index) => {
+    return (
+      <MapboxGL.PointAnnotation
+        key={index}
+        id={index}
+        anchor={{x: 0.5, y: 1}}
+        coordinate={[
+          parseFloat(posts.data[index].location.longitude),
+          parseFloat(posts.data[index].location.latitude),
+        ]}
+        onDeselected={this.onAnnotationDeselected.bind(this)}
+        onSelected={this.onAnnotationSelected.bind(this, index)}>
+        <Ionicons
+          name="map-marker-outline"
+          size={36}
+          color={(() => {
+            if (posts.data[index].goods === 'อาหาร') {
+              return '#fc6c4e';
+            } else if (posts.data[index].goods === 'เจลหรือหน้ากากอนามัย') {
+              return '#1b8c74';
+            } else {
+              return '#5495e3';
+            }
+          })()}
+        />
+      </MapboxGL.PointAnnotation>
+    );
+  };
+
+  renderAnnotations = () => {
+    const {posts, filter} = this.state;
+
+    const items = [];
+
+    if (!_.isEmpty(posts)) {
+      Object.keys(posts.data).map(index => {
+        if (posts.data[index].goods === filter) {
+          items.push(this.annotationComponent(posts, index));
+        } else if (filter === 'ทั้งหมด') {
+          items.push(this.annotationComponent(posts, index));
+        }
+      });
+    }
+
+    return items;
+  };
 
   render() {
-    const {followUserLocation, followZoomLevel} = this.state;
+    const {followUserLocation, followZoomLevel, initialSnap} = this.state;
 
     return (
       <View style={styles.map}>
@@ -139,6 +243,7 @@ class Map extends Component {
                   followZoomLevel={followZoomLevel}
                   followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
                 />
+                {this.renderAnnotations()}
               </MapboxGL.MapView>
               <View style={styles.menu}>
                 <TouchableOpacity
@@ -152,10 +257,11 @@ class Map extends Component {
                 </TouchableOpacity>
               </View>
               <BottomSheet
-                snapPoints={[300, 200, 0]}
+                ref={this.bottomSheetRef}
+                snapPoints={[300, 200, 40]}
                 renderHeader={this.renderHeader}
                 renderContent={this.renderContent}
-                initialSnap={2}
+                initialSnap={initialSnap}
               />
             </View>
           </View>
