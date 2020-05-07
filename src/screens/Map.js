@@ -42,6 +42,7 @@ class Map extends Component {
     this.setState({
       posts: this.props.post.posts,
     });
+    console.log('Post map');
   }
 
   requestLocationPermission = async () => {
