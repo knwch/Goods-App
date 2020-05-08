@@ -55,7 +55,7 @@ export const getPostId = postid => async dispatch => {
     const post = await axios.get(`/api/posts/${postid}`);
     dispatch({
       type: GET_POST,
-      payload: post.data,
+      payload: post.data.data,
     });
   } catch (err) {
     dispatch({
