@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
   panel: {
-    height: '100%',
+    height: Platform.OS === 'ios' ? '100%' : 425,
     // padding: 20,
     paddingHorizontal: 20,
     paddingTop: 10,
