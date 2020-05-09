@@ -10,16 +10,26 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {Text, Drawer, DrawerItem} from '@ui-kitten/components';
+import {Text, Drawer, DrawerItem, Divider} from '@ui-kitten/components';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {createIconSetFromIcoMoon} from 'react-native-vector-icons';
 import {getPostAll} from '../redux/actions/postActions';
+import icoMoonConfig from '../selection.json';
+
+const Icon = createIconSetFromIcoMoon(icoMoonConfig);
 
 MapboxGL.setAccessToken(
   'pk.eyJ1Ijoia253Y2giLCJhIjoiY2s5Zno2cGg2MGdqazNubzkzaHIzZmppMyJ9.mSjQ3XOe2IKTm1Ub-TwJZw',
 );
+
+const HackMarker = ({children}) =>
+  Platform.select({
+    ios: children,
+    android: <View>{children}</View>,
+  });
 
 class Map extends Component {
   constructor(props) {
@@ -33,6 +43,7 @@ class Map extends Component {
       filter: 'ทั้งหมด',
       followUserLocation: false,
       followZoomLevel: 13,
+      isAndroidAllow: false,
     };
 
     this.bottomSheetRef = React.createRef();
@@ -60,6 +71,9 @@ class Map extends Component {
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        this.setState({
+          isAndroidAllow: true,
+        });
         console.log('You can use the location');
       } else {
         console.log('Location permission denied');
@@ -69,11 +83,15 @@ class Map extends Component {
     }
   };
 
-  FoodIcon = () => <Ionicons name="food-apple" size={18} color="#fc6c4e" />;
+  FoodIcon = () => (
+    <Ionicons name="silverware-fork-knife" size={18} color="#f3705b" />
+  );
 
-  MedicIcon = () => <Ionicons name="medical-bag" size={18} color="#1b8c74" />;
+  MedicIcon = () => <Ionicons name="medical-bag" size={18} color="#6cd16c" />;
 
-  PackageIcon = () => <Ionicons name="package" size={18} color="#5495e3" />;
+  PackageIcon = () => (
+    <Ionicons name="package-variant" size={18} color="#9d795a" />
+  );
 
   onSelectFilter = () => index => {
     const {filterData} = this.state;
@@ -81,6 +99,11 @@ class Map extends Component {
       filter: filterData[index.row],
       filterIndex: index,
     });
+    this.drawer.closeDrawer();
+  };
+
+  labelDrawer = text => {
+    return <Text style={styles.label}>{text}</Text>;
   };
 
   renderDrawer = () => {
@@ -102,13 +125,19 @@ class Map extends Component {
         <Drawer
           selectedIndex={this.state.filterIndex}
           onSelect={this.onSelectFilter()}>
-          <DrawerItem title="ทั้งหมด" />
-          <DrawerItem accessoryRight={this.FoodIcon} title="อาหาร" />
+          <DrawerItem title={this.labelDrawer('ทั้งหมด')} />
+          <DrawerItem
+            accessoryRight={this.FoodIcon}
+            title={this.labelDrawer('อาหาร')}
+          />
           <DrawerItem
             accessoryRight={this.MedicIcon}
-            title="เจลหรือหน้ากากอนามัย"
+            title={this.labelDrawer('เจลหรือหน้ากากอนามัย')}
           />
-          <DrawerItem accessoryRight={this.PackageIcon} title="อื่นๆ" />
+          <DrawerItem
+            accessoryRight={this.PackageIcon}
+            title={this.labelDrawer('อื่นๆ')}
+          />
         </Drawer>
       </>
     );
@@ -129,15 +158,70 @@ class Map extends Component {
       return (
         <View style={styles.panel}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.panelTitle}>{selectedPost.topic}</Text>
-            <Text style={styles.panelSubtitle}>
-              International Airport - 40 miles away
-            </Text>
-            <View style={styles.panelButton}>
-              <Text style={styles.panelButtonTitle}>Directions</Text>
-            </View>
-            <View style={styles.panelButton}>
-              <Text style={styles.panelButtonTitle}>Search Nearby</Text>
+            <View style={styles.layout} level="3">
+              <Text style={styles.topic}>{selectedPost.topic}</Text>
+
+              <Text style={styles.label} appearance="hint">
+                สินค้า
+              </Text>
+              <Text style={styles.detail}>{selectedPost.goods}</Text>
+
+              <Text style={styles.label} appearance="hint">
+                รายละเอียดสินค้า
+              </Text>
+              <Text style={styles.detail}>
+                {(() => {
+                  if (selectedPost.describe === '') {
+                    return 'ไม่ระบุ';
+                  } else {
+                    return selectedPost.describe;
+                  }
+                })()}
+              </Text>
+
+              <View style={styles.row} level="3">
+                <View style={styles.rowContent}>
+                  <Text style={styles.label} appearance="hint">
+                    ราคา
+                  </Text>
+                  <Text style={styles.detail}>{selectedPost.price} บาท</Text>
+                </View>
+                <View style={styles.rowContent}>
+                  <Text style={styles.label} appearance="hint">
+                    ประเภท
+                  </Text>
+                  <Text style={styles.detail}>{selectedPost.type}</Text>
+                </View>
+              </View>
+              <View style={styles.row} level="3">
+                <View style={styles.rowContent}>
+                  <Text style={styles.label} appearance="hint">
+                    เบอร์ติดต่อ
+                  </Text>
+                  <Text style={styles.detail}>{selectedPost.phone}</Text>
+                </View>
+                <View style={styles.rowContent}>
+                  <Text style={styles.label} appearance="hint">
+                    ช่องทางการติดต่อเพิ่มเติม
+                  </Text>
+                  <Text style={styles.detail}>
+                    {(() => {
+                      if (selectedPost.contact === '') {
+                        return 'ไม่ระบุ';
+                      } else {
+                        return selectedPost.contact;
+                      }
+                    })()}
+                  </Text>
+                </View>
+              </View>
+
+              <Text style={styles.label} appearance="hint">
+                สถานที่
+              </Text>
+              <Text style={styles.detail}>{selectedPost.location.address}</Text>
+
+              <Divider style={styles.divider} />
             </View>
           </ScrollView>
         </View>
@@ -148,7 +232,7 @@ class Map extends Component {
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.panelTitle}>Goods Team :</Text>
             <Text style={styles.panelSubtitle}>
-              เลือก Marker ในแผนที่เพื่อดูรายละเอียดเพิ่มเติม
+              เลือก Marker บนแผนที่เพื่อดูรายละเอียดเพิ่มเติม
             </Text>
           </ScrollView>
         </View>
@@ -158,7 +242,7 @@ class Map extends Component {
 
   onAnnotationSelected = index => {
     const {posts} = this.state;
-    this.setState({selectedPost: posts.data[index]});
+    this.setState({selectedPost: posts[index]});
     this.bottomSheetRef.current.snapTo(0);
   };
 
@@ -166,31 +250,31 @@ class Map extends Component {
     this.bottomSheetRef.current.snapTo(2);
   };
 
-  annotationComponent = (posts, index) => {
+  annotationRef = null;
+  annotationComponent = (post, index) => {
     return (
       <MapboxGL.PointAnnotation
         key={index}
-        id={index}
+        id={post.id}
         anchor={{x: 0.5, y: 1}}
         coordinate={[
-          parseFloat(posts.data[index].location.longitude),
-          parseFloat(posts.data[index].location.latitude),
+          parseFloat(post.location.longitude),
+          parseFloat(post.location.latitude),
         ]}
         onDeselected={this.onAnnotationDeselected.bind(this)}
-        onSelected={this.onAnnotationSelected.bind(this, index)}>
-        <Ionicons
-          name="map-marker-outline"
-          size={36}
-          color={(() => {
-            if (posts.data[index].goods === 'อาหาร') {
-              return '#fc6c4e';
-            } else if (posts.data[index].goods === 'เจลหรือหน้ากากอนามัย') {
-              return '#1b8c74';
+        onSelected={this.onAnnotationSelected.bind(this, index)}
+        ref={ref => (this.annotationRef = ref)}>
+        <HackMarker>
+          {(() => {
+            if (post.goods === 'อาหาร') {
+              return <Icon name="food" size={36} color="#f3705b" />;
+            } else if (post.goods === 'เจลหรือหน้ากากอนามัย') {
+              return <Icon name="medic" size={36} color="#6cd16c" />;
             } else {
-              return '#5495e3';
+              return <Icon name="package" size={36} color="#9d795a" />;
             }
           })()}
-        />
+        </HackMarker>
       </MapboxGL.PointAnnotation>
     );
   };
@@ -201,11 +285,11 @@ class Map extends Component {
     const items = [];
 
     if (!_.isEmpty(posts)) {
-      Object.keys(posts.data).map(index => {
-        if (posts.data[index].goods === filter) {
-          items.push(this.annotationComponent(posts, index));
-        } else if (filter === 'ทั้งหมด') {
-          items.push(this.annotationComponent(posts, index));
+      posts.map((post, index) => {
+        if (filter === 'ทั้งหมด') {
+          items.push(this.annotationComponent(post, index));
+        } else if (post.goods === filter) {
+          items.push(this.annotationComponent(post, index));
         }
       });
     }
@@ -232,7 +316,11 @@ class Map extends Component {
               <MapboxGL.MapView
                 style={styles.map}
                 onDidFinishRenderingMapFully={r => {
-                  this.setState({followUserLocation: true});
+                  if (Platform.OS === 'android' && this.state.isAndroidAllow) {
+                    this.setState({followUserLocation: true});
+                  } else if (Platform.OS === 'ios') {
+                    this.setState({followUserLocation: true});
+                  }
                 }}>
                 <MapboxGL.UserLocation />
                 <MapboxGL.Camera
@@ -259,7 +347,7 @@ class Map extends Component {
               </View>
               <BottomSheet
                 ref={this.bottomSheetRef}
-                snapPoints={[300, 200, 40]}
+                snapPoints={[350, 200, 40]}
                 renderHeader={this.renderHeader}
                 renderContent={this.renderContent}
                 initialSnap={initialSnap}
@@ -295,11 +383,13 @@ const styles = StyleSheet.create({
   },
   panel: {
     height: '100%',
-    padding: 20,
-    backgroundColor: '#f7f5eee8',
+    // padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    backgroundColor: 'rgba(255,255,255,0.95)',
   },
   header: {
-    backgroundColor: '#f7f5eee8',
+    backgroundColor: 'rgba(255,255,255,0.95)',
     shadowColor: '#000000',
     paddingTop: 20,
     borderTopLeftRadius: 20,
@@ -318,12 +408,15 @@ const styles = StyleSheet.create({
   panelTitle: {
     fontSize: 27,
     height: 35,
+    color: '#2c3d70',
+    fontFamily: 'Kanit-Regular',
   },
   panelSubtitle: {
     fontSize: 14,
     color: 'gray',
     height: 30,
     marginBottom: 10,
+    fontFamily: 'Kanit-Regular',
   },
   panelButton: {
     padding: 20,
@@ -355,6 +448,43 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  marker: {
+    width: 32,
+    height: 32,
+  },
+  topic: {
+    color: '#2c3d70',
+    marginTop: 12,
+    fontFamily: 'Kanit-Regular',
+    fontSize: 24,
+  },
+  label: {
+    marginTop: 14,
+    fontSize: 12,
+    fontFamily: 'Kanit-Light',
+  },
+  labelDrawer: {
+    color: '#2c3d70',
+    fontFamily: 'Kanit-Regular',
+  },
+  detail: {
+    fontFamily: 'Sarabun-Regular',
+    color: '#2c3d70',
+  },
+  layout: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  rowContent: {
+    flex: 1,
+  },
+  divider: {
+    margin: 20,
   },
 });
 

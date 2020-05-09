@@ -72,7 +72,7 @@ class GoodStackScreen extends Component {
             <GoodStack.Screen
               name="Detail"
               component={Detail}
-              options={{title: 'My Goods'}}
+              options={{title: ''}}
             />
             <GoodStack.Screen
               name="Forms"
