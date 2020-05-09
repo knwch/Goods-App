@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  Image,
 } from 'react-native';
 import {Layout, Text, Divider} from '@ui-kitten/components';
 import {signoutUser} from '../redux/actions/authActions';
@@ -51,6 +52,11 @@ class Account extends Component {
             visible={this.state.loading}
             textContent={'Loading...'}
             textStyle={styles.spinnerTextStyle}
+          />
+
+          <Image
+            style={styles.image}
+            source={require('../assets/goods-blue.png')}
           />
 
           <Text style={styles.label} appearance="hint">
@@ -110,6 +116,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular',
   },
   image: {
+    marginTop: 20,
+    alignSelf: 'center',
     width: 125,
     height: 50,
     resizeMode: 'contain',

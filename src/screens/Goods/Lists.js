@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   Layout,
@@ -93,29 +93,38 @@ class Lists extends Component {
     const {navigate} = this.props.navigation;
     const renderItem = ({item, index}) => (
       <ListItem
+        style={styles.listItem}
         title={`${item.topic}`}
-        description={`${item.describe}`}
+        description={`${item.goods}`}
         onPress={() => navigate('Detail', {post: item})}
         accessoryRight={() =>
           item.postStatus ? (
             <Button
               size="tiny"
-              appearance="outline"
-              status="danger"
+              appearance="ghost"
+              status="success"
               onPress={() =>
-                this.onModal('คุณต้องการปิดโพสใช่หรือไม่', false, `${item.id}`)
+                this.onModal(
+                  `คุณต้องการปิดใช้งานโพสต์ ${item.topic} ใช่หรือไม่`,
+                  false,
+                  `${item.id}`,
+                )
               }>
-              Disable
+              กำลังเปิดใช้งาน
             </Button>
           ) : (
             <Button
               size="tiny"
-              appearance="outline"
-              status="success"
+              appearance="ghost"
+              status="basic"
               onPress={() =>
-                this.onModal('คุณต้องการเปิดโพสใช่หรือไม่', true, `${item.id}`)
+                this.onModal(
+                  `คุณต้องการเปิดใช้งานโพสต์ ${item.topic} ใช่หรือไม่`,
+                  true,
+                  `${item.id}`,
+                )
               }>
-              Available
+              ปิดใช้งานแล้ว
             </Button>
           )
         }
@@ -135,15 +144,25 @@ class Lists extends Component {
           onBackdropPress={this.closeModal}>
           <Card disabled={true}>
             <Text style={styles.modalLabel}>{this.state.message}</Text>
-            <Button onPress={this.onSubmit} status="success">
-              <Text style={styles.buttonText}>ตกลง</Text>
-            </Button>
-            <Text />
-            <Button onPress={this.closeModal}>
-              <Text style={styles.buttonText} status="danger">
-                ยกเลิก
-              </Text>
-            </Button>
+            <View style={styles.row}>
+              <View style={styles.rowContent}>
+                <Button
+                  style={styles.buttonMargin}
+                  onPress={this.closeModal}
+                  appearance="outline"
+                  status="basic">
+                  <Text style={styles.buttonGhost}>ยกเลิก</Text>
+                </Button>
+              </View>
+              <View style={styles.rowContent}>
+                <Button
+                  style={styles.buttonMargin}
+                  onPress={this.onSubmit}
+                  status="primary">
+                  <Text style={styles.buttonText}>ยืนยัน</Text>
+                </Button>
+              </View>
+            </View>
           </Card>
         </Modal>
 
@@ -189,8 +208,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#2c3d70',
     margin: 8,
   },
+  buttonMargin: {
+    margin: 8,
+  },
   buttonText: {
     color: '#FFF',
+    fontFamily: 'Kanit-Regular',
+  },
+  buttonGhost: {
     fontFamily: 'Kanit-Regular',
   },
   spinnerTextStyle: {
@@ -199,10 +224,21 @@ const styles = StyleSheet.create({
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
+  listItem: {
+    paddingVertical: 18,
+  },
   modalLabel: {
     fontFamily: 'Kanit-Regular',
     marginBottom: 8,
     color: '#2c3d70',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // backgroundColor: '#edf1f7',
+  },
+  rowContent: {
+    flex: 1,
   },
 });
 
