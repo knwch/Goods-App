@@ -35,7 +35,7 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts: {},
+      posts: [],
       initialSnap: 2,
       selectedPost: {},
       filterData: ['ทั้งหมด', 'อาหาร', 'เจลหรือหน้ากากอนามัย', 'อื่นๆ'],
@@ -66,7 +66,7 @@ class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.post.posts !== prevProps.post.posts) {
+    if (this.props.post.posts.length !== prevProps.post.posts.length) {
       console.log('update new posts');
       this.setState({
         posts: this.props.post.posts,
@@ -274,7 +274,14 @@ class Map extends Component {
         onSelected={this.onAnnotationSelected.bind(this, index)}
         ref={ref => (this.annotationRef = ref)}>
         <HackMarker>
-          {(() => {
+          {post.goods === 'อาหาร' ? (
+            <Icon name="food" size={36} color="#f3705b" />
+          ) : post.goods === 'เจลหรือหน้ากากอนามัย' ? (
+            <Icon name="medic" size={36} color="#6cd16c" />
+          ) : (
+            <Icon name="package" size={36} color="#9d795a" />
+          )}
+          {/* {(() => {
             if (post.goods === 'อาหาร') {
               return <Icon name="food" size={36} color="#f3705b" />;
             } else if (post.goods === 'เจลหรือหน้ากากอนามัย') {
@@ -282,13 +289,18 @@ class Map extends Component {
             } else {
               return <Icon name="package" size={36} color="#9d795a" />;
             }
-          })()}
+          })()} */}
         </HackMarker>
       </MapboxGL.PointAnnotation>
     );
   };
 
+  onRefresh = async () => {
+    await this.props.getPostAll();
+  };
+
   renderAnnotations = () => {
+    console.log('Run');
     const {posts, filter} = this.state;
 
     const items = [];
@@ -356,7 +368,8 @@ class Map extends Component {
               </View>
               <View style={styles.refresh}>
                 <TouchableOpacity
-                  hitSlop={{top: 30, left: 30, bottom: 30, right: 30}}>
+                  hitSlop={{top: 30, left: 30, bottom: 30, right: 30}}
+                  onPress={this.onRefresh}>
                   <Ionicons name="refresh" size={38} color="#2c3d70" />
                 </TouchableOpacity>
               </View>
