@@ -50,8 +50,8 @@ export default (state = initialState, action) => {
     case ADD_POST:
       return {
         ...state,
-        postUser: [action.payload, ...state.postUser],
-        posts: [action.payload, ...state.posts],
+        postUser: [...state.postUser, action.payload],
+        posts: [...state.posts, action.payload],
         loading: false,
       };
     case GET_POST_USER:
