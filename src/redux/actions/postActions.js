@@ -43,7 +43,7 @@ export const getPostAll = () => async dispatch => {
     console.log(err);
     dispatch({
       type: GET_POSTS,
-      payload: null,
+      payload: [],
     });
   }
 };
@@ -77,7 +77,7 @@ export const getPostUser = userid => async dispatch => {
   } catch (err) {
     dispatch({
       type: GET_POST_USER,
-      payload: null,
+      payload: [],
     });
   }
 };
