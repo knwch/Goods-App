@@ -56,7 +56,7 @@ class Forms extends Component {
 
   UNSAFE_componentWillUpdate(nextProps, nextState) {
     const {validation} = this.state;
-    console.log(nextProps.route.params);
+    // console.log(nextProps.route.params);
     if (nextProps.route.params != null) {
       // get data from MapPicker
       if (

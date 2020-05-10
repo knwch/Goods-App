@@ -14,7 +14,7 @@ export default class HomeStackScreen extends React.Component {
         screenOptions={{
           headerStyle: {
             backgroundColor: '#2c3d70',
-            height: 80,
+            height: 75,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {

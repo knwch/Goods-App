@@ -18,14 +18,13 @@ export const addPost = postData => async dispatch => {
     dispatch(clearErrors());
     dispatch(setPostLoading());
     const post = await axios.post('/api/posts/', postData);
-    console.log(post.data);
+    // console.log([post.data.data]);
     dispatch({
       type: ADD_POST,
       payload: post.data.data,
     });
   } catch (err) {
-    const error = err.response.data;
-    console.log(error);
+    console.log(err);
     dispatch(setUnloading());
   }
 };
@@ -35,15 +34,16 @@ export const getPostAll = () => async dispatch => {
   try {
     dispatch(setPostLoading());
     const post = await axios.get(`/api/posts/`);
+    // console.log(post.data.data);
     dispatch({
       type: GET_POSTS,
-      payload: post.data,
+      payload: post.data.data,
     });
   } catch (err) {
     console.log(err);
     dispatch({
       type: GET_POSTS,
-      payload: null,
+      payload: [],
     });
   }
 };
@@ -55,7 +55,7 @@ export const getPostId = postid => async dispatch => {
     const post = await axios.get(`/api/posts/${postid}`);
     dispatch({
       type: GET_POST,
-      payload: post.data,
+      payload: post.data.data,
     });
   } catch (err) {
     dispatch({
@@ -77,7 +77,7 @@ export const getPostUser = userid => async dispatch => {
   } catch (err) {
     dispatch({
       type: GET_POST_USER,
-      payload: null,
+      payload: [],
     });
   }
 };
