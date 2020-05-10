@@ -65,6 +65,15 @@ class Map extends Component {
     console.log('Post map');
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.post.posts !== prevProps.post.posts) {
+      console.log('update new posts');
+      this.setState({
+        posts: this.props.post.posts,
+      });
+    }
+  }
+
   requestLocationPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -345,6 +354,12 @@ class Map extends Component {
                   />
                 </TouchableOpacity>
               </View>
+              <View style={styles.refresh}>
+                <TouchableOpacity
+                  hitSlop={{top: 30, left: 30, bottom: 30, right: 30}}>
+                  <Ionicons name="refresh" size={38} color="#2c3d70" />
+                </TouchableOpacity>
+              </View>
               <BottomSheet
                 ref={this.bottomSheetRef}
                 snapPoints={[350, 200, 40]}
@@ -485,6 +500,12 @@ const styles = StyleSheet.create({
   },
   divider: {
     margin: 20,
+  },
+  refresh: {
+    position: 'absolute',
+    right: '6%',
+    bottom: '10%',
+    zIndex: 10,
   },
 });
 
