@@ -30,6 +30,7 @@
 		822ABA87245C7EEF00BC5485 /* Sarabun-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA7D245C7EEE00BC5485 /* Sarabun-Light.ttf */; };
 		822ABA88245C7EEF00BC5485 /* Sarabun-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA7E245C7EEE00BC5485 /* Sarabun-Medium.ttf */; };
 		822ABA89245C7EEF00BC5485 /* Kanit-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 822ABA7F245C7EEF00BC5485 /* Kanit-SemiBold.ttf */; };
+		82A6F9072465E48C0046AF86 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82A6F9062465E48C0046AF86 /* icomoon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		822ABA7D245C7EEE00BC5485 /* Sarabun-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sarabun-Light.ttf"; sourceTree = "<group>"; };
 		822ABA7E245C7EEE00BC5485 /* Sarabun-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sarabun-Medium.ttf"; sourceTree = "<group>"; };
 		822ABA7F245C7EEF00BC5485 /* Kanit-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kanit-SemiBold.ttf"; sourceTree = "<group>"; };
+		82A6F9062465E48C0046AF86 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = icomoon.ttf; sourceTree = "<group>"; };
 		890D4CA1532DF3F0BCF32304 /* libPods-goods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-goods.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C255FA1B2A6CC54A182FA632 /* libPods-goods-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-goods-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D40A45430A573A320378F7DE /* libPods-goods-goodsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-goods-goodsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -200,6 +202,7 @@
 				822ABA7B245C7EEE00BC5485 /* Kanit-Regular.ttf */,
 				822ABA7F245C7EEF00BC5485 /* Kanit-SemiBold.ttf */,
 				822ABA76245C7EEE00BC5485 /* Sarabun-Bold.ttf */,
+				82A6F9062465E48C0046AF86 /* icomoon.ttf */,
 				822ABA7D245C7EEE00BC5485 /* Sarabun-Light.ttf */,
 				822ABA7E245C7EEE00BC5485 /* Sarabun-Medium.ttf */,
 				822ABA7A245C7EEE00BC5485 /* Sarabun-Regular.ttf */,
@@ -389,6 +392,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				822ABA87245C7EEF00BC5485 /* Sarabun-Light.ttf in Resources */,
+				82A6F9072465E48C0046AF86 /* icomoon.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				822ABA83245C7EEF00BC5485 /* Kanit-Medium.ttf in Resources */,
 				822ABA80245C7EEF00BC5485 /* Sarabun-Bold.ttf in Resources */,
@@ -433,7 +437,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		12C235CAB7612700720842BC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
